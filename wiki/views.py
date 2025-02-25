@@ -15,4 +15,4 @@ def articles_list(request):
 
 def article_detail(request, pk):
     ctx = {"details": Article.objects.get(pk=pk)}
-    return render(request, "wiki/article_detal.html", ctx)
+    return render(request, "wiki/article_detail.html", ctx)
