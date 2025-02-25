@@ -5,15 +5,14 @@ def index(request):
     ctx = {
         "list_view_path": "wiki/articles",
         "categories_list": ArticleCategory.objects.all(),
-        "articles_list": Article.objects.all(),
     }
-    return render(request, "index.html", ctx)
+    return render(request, "wiki/index.html", ctx)
 
 def articles_list(request):
     all_articles = Article.objects.all()
     ctx = {"articles": all_articles if all_articles else []}
-    return render(request, "articles_list.html", ctx)
+    return render(request, "wiki/articles_list.html", ctx)
 
 def article_detail(request, pk):
     ctx = {"details": Article.objects.get(pk=pk)}
-    return render(request, "article_detal.html", ctx)
+    return render(request, "wiki/article_detal.html", ctx)

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Index{% endblock %}
+{% block content %}
+    <h1>Home Page</h1>
+    <ul>
+        <li><a href="{{ list_view_path }}">List of Articles</a></li>
+        {% for category in categories_list %}
+            <li>
+                {{ category }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock%}
