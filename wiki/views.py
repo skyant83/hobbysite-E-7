@@ -10,9 +10,9 @@ def index(request):
 
 def articles_list(request):
     all_articles = Article.objects.all()
-    ctx = {"articles": all_articles if all_articles else []}
+    ctx = {"articles": all_articles}
     return render(request, "wiki/articles_list.html", ctx)
 
 def article_detail(request, pk):
-    ctx = {"details": Article.objects.get(pk=pk)}
+    ctx = {"article": Article.objects.get(pk=pk)}
     return render(request, "wiki/article_detail.html", ctx)

@@ -22,6 +22,7 @@ class Article(models.Model):
         null=True,
         related_name='category'
     )
+    entry = models.TextField(null=True)
     created_on = models.DateTimeField(null=False)
     updated_on = models.DateTimeField(null=False)
 
@@ -29,7 +30,7 @@ class Article(models.Model):
         return f"{self.title}; Cat: {self.category}"
     
     def get_absolute_url(self):
-        return reverse("wiki:model_detail", kwargs={"pk": self.pk})
+        return reverse("wiki:article_detail", kwargs={"pk": self.pk})
     
     class Meta:
         ordering = ["created_on"]

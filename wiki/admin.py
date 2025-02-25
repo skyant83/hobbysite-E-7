@@ -14,12 +14,12 @@ class ArticleCategoryAdmin(admin.ModelAdmin):
 class ArticleAdmin(admin.ModelAdmin):
     model = Article
     search_fields = ("title", "category",)
-    list_display = ("title", "category", "created_on",)
+    list_display = ("title", "created_on", "updated_on")
     list_filter = ("title", "category", "created_on", "updated_on")
     fieldsets = (
         ("Article Information", {
             "fields": [
-                ("title", "category", "created_on"), "entry"
+                ("title", "category",), ("created_on", "updated_on"), "entry"
             ]
         }),
     )
