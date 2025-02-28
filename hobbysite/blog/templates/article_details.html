@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock title %}
+{% block content %}
+    <h1>{{article.name}}</h1>
+    <h4>Created on {{article.created_on}}</h4>
+    <h4>Last Updated on {{article.updated_on}}</h4>
+
+    <p> {{article.entry}} </p>
+{% endblock content %}
