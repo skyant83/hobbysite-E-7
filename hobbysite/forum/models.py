@@ -37,3 +37,4 @@ class Post(models.Model):
     
     def save(self, **kwargs):
         self.date_updated = datetime.now()
+        super().save(**kwargs)
