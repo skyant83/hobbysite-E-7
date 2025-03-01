@@ -24,14 +24,19 @@ class ArticleCategory(models.Model):
 class Article(models.Model):
     '''Model definition for Article.'''
 
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, verbose_name='Article Title')
     category = models.ForeignKey(
                         ArticleCategory,
                         on_delete=models.SET_NULL,
-                        null=True)
+                        null=True,
+                        verbose_name='Category')
     entry = models.TextField()
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
+    created_on = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Dated Created')
+    updated_on = models.DateTimeField(
+        auto_now=True,
+        verbose_name='Last Updated')
 
     def __str__(self):
         return self.title
