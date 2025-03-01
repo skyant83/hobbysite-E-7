@@ -1,7 +1,6 @@
-from datetime import datetime
-
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 
 # Create your models here.
@@ -11,9 +10,11 @@ class PostCategory(models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name = 'Post category'
+        verbose_name_plural = 'Post categories'
 
     def __str__(self):
-        return f'{self.name}\n\n{self.description}'
+        return f'{self.name}'
 
 
 class Post(models.Model):
@@ -23,8 +24,8 @@ class Post(models.Model):
         on_delete = models.SET_NULL,
         null = True)
     entry = models.TextField()
-    date_created = models.DateTimeField(datetime.now())
-    date_updated = models.DateTimeField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-date_created']
@@ -34,7 +35,3 @@ class Post(models.Model):
     
     def get_absolute_url(self):
         return reverse('forum:post', kwargs={'pk': self.pk})
-    
-    def save(self, **kwargs):
-        self.date_updated = datetime.now()
-        super().save(**kwargs)
