@@ -30,8 +30,9 @@ class Post(models.Model):
         ordering = ['-date_created']
 
     def __str__(self):
-        return (f'{self.title} created on {self.date_created}'
-                f' last updated {self.date_updated}')
+        return (f'{self.title}'
+                f' created on {self.date_created.astimezone().ctime()}'
+                f' last updated {self.date_updated.astimezone().ctime()}')
 
     def get_absolute_url(self):
         return reverse('forum:post', kwargs={'pk': self.pk})
