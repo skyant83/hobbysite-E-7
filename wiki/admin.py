@@ -19,11 +19,12 @@ class ArticleAdmin(admin.ModelAdmin):
     fieldsets = (
         ("Article Information", {
             "fields": [
-                ("title", "category",), ("created_on", "updated_on"), "entry"
+                ("title", "category",),
+                "entry"
             ]
         }),
     )
-    
+
 
 admin.site.register(ArticleCategory, ArticleCategoryAdmin)
 admin.site.register(Article, ArticleAdmin)

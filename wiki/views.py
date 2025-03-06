@@ -1,18 +1,13 @@
-from django.shortcuts import render
-from .models import ArticleCategory, Article
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from .models import Article
 
-def index(request):
-    ctx = {
-        "list_view_path": "wiki/articles",
-        "categories_list": ArticleCategory.objects.all(),
-    }
-    return render(request, "wiki/index.html", ctx)
 
-def articles_list(request):
-    all_articles = Article.objects.all()
-    ctx = {"articles": all_articles}
-    return render(request, "wiki/articles_list.html", ctx)
+class ArticleListView(ListView):
+    model = Article
+    template_name = "wiki/articles_list.html"
 
-def article_detail(request, pk):
-    ctx = {"article": Article.objects.get(pk=pk)}
-    return render(request, "wiki/article_detail.html", ctx)
+
+class ArticleDetailView(DetailView):
+    model = Article
+    template_name = "wiki/article_detail.html"
