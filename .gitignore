@@ -2,7 +2,4 @@
 .venv/
 **/*.pyc
 **/__pycache__
-<<<<<<< HEAD
 db.sqlite3
-=======
->>>>>>> parent of a05b954 (Database Removal)
