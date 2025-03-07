@@ -1,7 +1,12 @@
-{% extends "comm/comm_base.html" %}
-{% block title %}{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}Commissions{% endblock %}
+
+{% block header %}Commissions{% endblock header %}
 {% block content %}
-<body>
-    
-</body>
+    <ol>
+        {% for post in object_list %}
+        <li><a href="{{ post.get_absolute_url }}">{{ post }}</a></li>
+        {% endfor %}
+    </ol>
 {% endblock %}
