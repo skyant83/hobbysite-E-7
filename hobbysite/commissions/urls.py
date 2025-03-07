@@ -1,7 +1,10 @@
 # <appname>/urls.py
 from django.urls import path
-from .views import index
+from .views import *
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('list/', index, name='list'),
+    path('details/', index, name='comm-details')
 ]
+
+app_name = "commisions"
