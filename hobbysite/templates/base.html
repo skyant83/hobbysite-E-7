@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Title{% endblock %}</title>
-        {% block style %}{% endblock %}
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>{% block title %} App Title {% endblock %}</title>
+        {% block styles %}{% endblock %}
     </head>
     <body>
+        <h1>{% block header %}Header{% endblock header %}</h1>
         {% block content %}{% endblock %}
     </body>
 </html>

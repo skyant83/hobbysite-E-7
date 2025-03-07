@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %} {{article.title}} {% endblock title %}
+{% block header %} {{article.title}} {% endblock header %}
+{% block content %}
+    <blockquote>
+        <sub>Created on {{article.created_on}}</sub>
+        <br>
+        <sub>Last Updated on {{article.updated_on}}</sub>
+    </blockquote>
+    <hr>
+
+    <p> {{article.entry}} </p>
+{% endblock content %}
