@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block header %}{{ object.name }}{% endblock header %}
+{% block content %}
+    <h3>{{ object.product_type }}</h3>
+    <h3>{{ object.description }}</h3>
+    <h3>₱{{ object.price }}</h3>
+{% endblock %}

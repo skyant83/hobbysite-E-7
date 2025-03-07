@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Forum{% endblock %}
+
+{% block header %}Forum{% endblock header %}
+{% block content %}
+    <ol>
+        {% for post in object_list %}
+        <li><a href="{{ post.get_absolute_url }}">{{ post }}</a></li>
+        {% endfor %}
+    </ol>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %} {{article.title}} {% endblock title %}
+{% block header %} {{article.title}} {% endblock header %}
+{% block content %}
+    <blockquote>
+        <div style="display:flex">
+            <div>
+                <sub>Created on {{article.created_on}}</sub>
+                <br>
+                <sub>Last Updated on {{article.updated_on}}</sub>
+            </div>
+            <div>
+                <sub>Category: {{article.category}}</sub>
+            </div>
+        </div>
+    </blockquote>
+    <hr>
+
+    <p> {{article.entry}} </p>
+{% endblock content %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block header %} Posted Blogs {% endblock header %}
+{% block content %}
+    <ul>
+        {% for article in object_list %}
+            <li>
+                <a href="{{article.get_absolute_url}}">{{article.title}}</a>
+                <br>
+                <sub>Posted: {{article.created_on|date:"h:i A    N t, Y"}} </sub>
+            </li>
+            <br>
+        {% endfor %}
+    </ul>
+{% endblock content %}
