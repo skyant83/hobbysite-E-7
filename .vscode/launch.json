@@ -11,11 +11,11 @@
 			"request": "launch",
 			"python": "${workspaceFolder}\\.venv\\Scripts\\python",
 			"program": "${workspaceFolder}\\hobbysite\\manage.py",
-			"args": ["runserver"],
+			"args": ["runserver", "0.0.0.0:8000"],
 			"django": true,
 			"justMyCode": true,
 			"serverReadyAction": {
-				"pattern": "Starting development server at http://127.0.0.1:([0-9]+)",
+				"pattern": "Starting development server at http://0.0.0.0:([0-9]+)",
 				"uriFormat": "http://localhost:%s/${input:webpage}"
 			}
 		}
