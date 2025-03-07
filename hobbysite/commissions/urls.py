@@ -1,6 +1,6 @@
 # <appname>/urls.py
 from django.urls import path
-from .views import *
+from .views import CommissionListView, CommissionDetailView
 
 urlpatterns = [
     path('list/', CommissionListView.as_view(), name='list'),
