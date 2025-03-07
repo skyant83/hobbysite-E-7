@@ -3,10 +3,11 @@
     <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <title>{% block title %} Blog {% endblock %}</title>
+        <title>{% block title %} App Title {% endblock %}</title>
         {% block styles %}{% endblock %}
     </head>
     <body>
+        <h1>{% block header %}Header{% endblock header %}</h1>
         {% block content %}{% endblock %}
     </body>
 </html>
