@@ -3,7 +3,7 @@ from .views import CommissionListView, CommissionDetailView
 
 urlpatterns = [
     path('list/', CommissionListView.as_view(), name='list'),
-    path('details/', CommissionDetailView.as_view(), name='comm_detail')
+    path('details<int:pk>/', CommissionDetailView.as_view(), name='comm-detail')
 ]
 
-app_name = "commisions"
+app_name = "commissions"
