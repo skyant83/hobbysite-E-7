@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Commissions{% endblock %}
+
+{% block header %}Commissions{% endblock header %}
+{% block content %}
+    <h2>{{ object.title }}</h2>
+    <h3>{{ object.category }}</h3>
+    <p>
+        Created {{ object.date_created }}<br>
+        Last updated {{ object.date_updated }}
+        <hr>
+        Description: {{object.desc}}
+        Personel Required: {{object.required_ppl}} <br><br>
+        <!-- {% for comment in object.commissions.get.entry %}
+            {{comment}}
+        {% endfor %} -->
+    </p>
+    <!-- {{object.entry}} -->
+{% endblock %}
