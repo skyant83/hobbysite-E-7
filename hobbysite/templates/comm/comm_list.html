@@ -1,7 +1,11 @@
 {% extends "comm/comm_base.html" %}
-{% block title %}{% endblock %}
 {% block content %}
 <body>
-    
+    {% for commission in object_list %}
+    <li>
+        <p><b>{{commission.title}}</b></p>
+    </li>
+    <p>Created on: {{commission.created_on}}</p>
+    {% endfor %}
 </body>
 {% endblock %}
