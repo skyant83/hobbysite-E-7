@@ -9,4 +9,4 @@ from .models import Profile
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
     fields = ['display_name', 'email_address']
-    template_name = 'profile_detail.html'
+    template_name = 'user_management/profile_detail.html'
