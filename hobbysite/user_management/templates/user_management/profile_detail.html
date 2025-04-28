@@ -1,0 +1,11 @@
+{% extends 'base_with_login.html' %}
+
+{% block header %}Edit Profile{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Update</button>
+    </form>
+{% endblock %}
