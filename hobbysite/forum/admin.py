@@ -8,9 +8,9 @@ class ThreadCategoryAdmin(admin.ModelAdmin):
     model = ThreadCategory
 
 
-class PostAdmin(admin.ModelAdmin):
+class ThreadAdmin(admin.ModelAdmin):
     model = Thread
 
 
 admin.site.register(ThreadCategory, ThreadCategoryAdmin)
-admin.site.register(Thread, PostAdmin)
+admin.site.register(Thread, ThreadAdmin)
