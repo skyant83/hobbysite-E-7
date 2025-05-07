@@ -1,14 +1,14 @@
 from django.views.generic import ListView, DetailView
 
-from .models import Post
+from .models import Thread
 
 
 # Create your views here.
-class PostListView(ListView):
-    model = Post
-    template_name = 'forum/post_list.html'
+class ThreadListView(ListView):
+    model = Thread
+    template_name = 'forum/thread_list.html'
 
 
-class PostDetailView(DetailView):
-    model = Post
-    template_name = 'forum/post.html'
+class ThreadDetailView(DetailView):
+    model = Thread
+    template_name = 'forum/thread.html'
