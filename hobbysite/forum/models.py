@@ -42,7 +42,7 @@ class Thread(models.Model):
                 f' last updated {self.date_updated.astimezone().ctime()}')
 
     def get_absolute_url(self):
-        return reverse('forum:post', kwargs={'pk': self.pk})
+        return reverse('forum:thread', kwargs={'pk': self.pk})
 
 
 class Comment(models.Model):
