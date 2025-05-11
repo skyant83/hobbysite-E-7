@@ -23,7 +23,7 @@ class ArticleDetailView(DetailView):
         ctx['comments'] = Comment.objects.filter(article=curr_article)
         ctx['same_cat_articles'] = Article.objects.filter(
             category=curr_article.category) & Article.objects.exclude(
-            pk=self.pk)
+            pk=self.kwargs['pk'])
         return ctx
 
     def post(self, request, *args, **kwargs):
@@ -31,7 +31,7 @@ class ArticleDetailView(DetailView):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.author = Profile.objects.get(user=self.request.user)
-            comment.article = Article.objects.get(pk=kwargs['pk'])
+            comment.article = Article.objects.get(pk=self.kwargs['pk'])
             comment.save()
             return self.get(request, *args, **kwargs)
 
