@@ -1,15 +1,18 @@
 {% extends 'base_with_login.html' %}
 {% load static %}
 {% block title %}{{ object.title }}{% endblock %}
-{% block header %} {{object.title}} {% endblock header %}
+{% block header %} <img src='{{ object.header_image.url }}'> {% endblock header %}
 {% block content %}
-    <a href="{% url 'wiki:article_list' %}">To Article list</a>
+    <h1>{{ object.title }}</h1>
+    <br><a href="{% url 'wiki:article_list' %}">To Article list</a>
     <h3>{{ object.category }}</h3>
     <h3>by {{ object.author }}</h3>
     <h6>Created on: {{ object.created_on }}; Updated on: {{ object.updated_on }}</h6>
     <p>{{ object.entry }}</p>
 
-    <a href="{% url 'wiki:article_update' pk %}">Update article</a>
+    {% if request.user == object.author.user %}
+        <a href="{% url 'wiki:article_update' pk %}">Update article</a>
+    {% endif %}
 
     <h3>Read More from {{ object.category }}</h3>
     <ul>
@@ -20,13 +23,15 @@
         {% endfor %}
     </ul>
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form }}
-        <button type="submit">Comment</button>
-    </form>
+    {% if request.user.is_authenticated %}
+        <h3>Comments</h3>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit">Comment</button>
+        </form>
+    {% endif %}
 
-    <h3>Comments</h3>
     <ul>
         {% for comment in comments %}
             <h3>{{ comment.author }} on {{ comment.created_on }}</h3>

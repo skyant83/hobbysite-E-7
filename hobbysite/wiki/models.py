@@ -19,6 +19,10 @@ class ArticleCategory(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=255)
     entry = models.TextField(null=True)
+    header_image = models.ImageField(
+        null=True,
+        upload_to='images/'
+    )
     author = models.ForeignKey(
         Profile,
         on_delete=models.SET_NULL,
@@ -53,6 +57,7 @@ class Article(models.Model):
 
 
 class Comment(models.Model):
+    entry = models.TextField()
     author = models.ForeignKey(
         Profile,
         on_delete=models.SET_NULL,
@@ -64,7 +69,6 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         related_name='article'
     )
-    entry = models.TextField()
     created_on = models.DateTimeField(
         null=False,
         auto_now_add=True

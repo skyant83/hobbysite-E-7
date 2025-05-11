@@ -4,11 +4,28 @@
 {% block header %}Articles{% endblock header %}
 {% block content %}
     <a href="{% url 'wiki:article_create' %}">Write an Article</a>
-    <ul>
-        {% for article in object_list %}
-            <li>
-                <a href="{{ article.get_absolute_url }}">{{ article.title }} </a>
-            </li>
-        {% endfor %}
-    </ul>
+    {% if request.user.is_authenticated %}
+        <p>My Articles</p>
+        <ul>
+            {% for article in user_articles %}
+                <li>
+                    <a href="{{ article.get_absolute_url }}">{{ article.title }} </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h3>All Articles</h3>
+    {% for category, articles in categories.items %}
+        {% if articles %}
+            <p>{{ category }}</p>
+        {% endif %}
+        <ul>
+            {% for article in articles %}
+                <li>
+                    <a href="{{ article.get_absolute_url }}">{{ article.title }} </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
 {% endblock %}
