@@ -1,6 +1,12 @@
 {% extends 'base_with_login.html' %}
 {% load static %}
 {% block title %}Create Article{% endblock %}
-{% block header %}Create Articles{% endblock header %}
+{% block header %}Create Article{% endblock header %}
 {% block content %}
+    <a href="{% url 'wiki:article_list' %}">Back to Articles List</a>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Publish</button>
+    </form>
 {% endblock %}

@@ -18,6 +18,7 @@ class ArticleCategory(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=255)
+    entry = models.TextField(null=True)
     author = models.ForeignKey(
         Profile,
         on_delete=models.SET_NULL,
@@ -30,13 +31,14 @@ class Article(models.Model):
         null=True,
         related_name='category'
     )
-    entry = models.TextField(null=True)
     created_on = models.DateTimeField(
         null=False,
-        auto_now_add=True)
+        auto_now_add=True
+    )
     updated_on = models.DateTimeField(
         null=False,
-        auto_now=True)
+        auto_now=True
+    )
 
     def __str__(self):
         return f'{self.title}; Cat: {self.category}'
@@ -76,6 +78,6 @@ class Comment(models.Model):
         return self.author
 
     class Meta:
-        ordering = ['created_on']
+        ordering = ['-created_on']
         verbose_name = 'Comment'
         verbose_name_plural = 'Comments'

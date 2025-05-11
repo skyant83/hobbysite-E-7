@@ -10,7 +10,7 @@ urlpatterns = [
     path(
         'articles',
         ArticleListView.as_view(),
-        name='articles_list'
+        name='article_list'
     ),
     path(
         'article/<int:pk>',

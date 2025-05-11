@@ -3,6 +3,7 @@
 {% block title %}Articles{% endblock %}
 {% block header %}Articles{% endblock header %}
 {% block content %}
+    <a href="{% url 'wiki:article_create' %}">Write an Article</a>
     <ul>
         {% for article in object_list %}
             <li>

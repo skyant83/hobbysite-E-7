@@ -3,4 +3,10 @@
 {% block title %}Update Article{% endblock %}
 {% block header %}Update Article{% endblock header %}
 {% block content %}
+    <a href="{% url 'wiki:article_list' %}">Back to Articles List</a>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Edit article</button>
+    </form>
 {% endblock %}
