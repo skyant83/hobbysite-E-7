@@ -33,4 +33,6 @@ urlpatterns = [
          include('user_management.urls', namespace='user_management')),
     path('accounts/',
          include('django.contrib.auth.urls')),
+    path('',
+         include('homepage.urls', namespace='homepage'))
 ]
