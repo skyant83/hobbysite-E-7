@@ -4,12 +4,17 @@ from .models import ThreadCategory, Thread, Comment
 
 
 # Register your models here.
+class CommentInline(admin.TabularInline):
+    model = Comment
+
+
 class ThreadCategoryAdmin(admin.ModelAdmin):
     model = ThreadCategory
 
 
 class ThreadAdmin(admin.ModelAdmin):
     model = Thread
+    inlines = [CommentInline,]
 
 
 class CommentAdmin(admin.ModelAdmin):
