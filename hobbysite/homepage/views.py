@@ -2,9 +2,6 @@ from django.shortcuts import render
 
 
 def index(request):
-    ctx = {
-        'blog_link': ''
-    }
-    return render(request, 'homepage/homepage.html', ctx)
+    return render(request, 'homepage/homepage.html', context=None)
 
 # Create your views here.
