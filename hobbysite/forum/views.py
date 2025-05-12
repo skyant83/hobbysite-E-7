@@ -1,4 +1,5 @@
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -63,8 +64,16 @@ class ThreadCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = Profile.objects.get(user=self.request.user)
         return super().form_valid(form)
 
+    def get_success_url(self):
+        return reverse_lazy('forum:thread_detail',
+                            kwargs={'pk': self.kwargs['pk']})
+
 
 class ThreadUpdateView(LoginRequiredMixin, UpdateView):
     model = Thread
     fields = ['title', 'category', 'entry', 'image']
     template_name = 'forum/thread_edit.html'
+
+    def get_success_url(self):
+        return reverse_lazy('forum:thread_detail',
+                            kwargs={'pk': self.kwargs['pk']})
