@@ -2,6 +2,15 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'homepage/homepage.html', context=None)
+    ctx = {
+        'members': [
+            'Badiola, Enrique Gabriel',
+            'Dorde, Andre Benedict',
+            'Pascual, Eizekiel Pierre',
+            'Tabo, Ken Jonree',
+            'Villegas, Jacob Noah',
+        ]
+    }
+    return render(request, 'homepage/homepage.html', ctx)
 
 # Create your views here.

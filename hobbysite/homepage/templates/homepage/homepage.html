@@ -10,9 +10,9 @@
     <br><a href="{% url 'commisions:list'%}">Commission</a><br>
     
     <h2>Members:</h2>
-    <p>Badiola, Enrique Gabriel</p>
-    <p>Dorde, Andre Benedict</p>
-    <p>Pascual, Eizekiel</p>
-    <p>Tabo, Ken Jonree Tabo</p>
-    <p>Villegas, Noah</p>
+    <ul>
+        {% for member in members %}
+            <li><p>{{ member }}</p></li>
+        {% endfor %}
+    </ul>
 {% endblock %}
