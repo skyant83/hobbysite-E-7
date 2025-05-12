@@ -69,14 +69,28 @@ class ArticleListView(ListView):
 class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
     form_class = ArticleForm
-    template_name = 'wiki/article_create.html'
+    template_name = 'wiki/article_update_create.html'
 
     def form_valid(self, form):
         form.instance.author = Profile.objects.get(user=self.request.user)
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        ctx = super(ArticleCreateView, self).get_context_data(**kwargs)
+        ctx['title'] = 'Create an Article'
+        ctx['header'] = 'Create an Article'
+        ctx['button_text'] = 'Publish Article'
+        return ctx
+
 
 class ArticleUpdateView(LoginRequiredMixin, UpdateView):
     model = Article
     form_class = ArticleForm
-    template_name = 'wiki/article_update.html'
+    template_name = 'wiki/article_update_create.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(ArticleCreateView, self).get_context_data(**kwargs)
+        ctx['title'] = 'Update Article'
+        ctx['header'] = 'Update Article'
+        ctx['button_text'] = 'Edit Article'
+        return ctx
