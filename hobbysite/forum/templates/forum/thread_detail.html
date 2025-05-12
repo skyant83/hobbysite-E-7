@@ -4,11 +4,36 @@
 
 {% block header %}Forum{% endblock header %}
 {% block content %}
-    <h2>{{ object.title }}</h2>
-    <h3>{{ object.category }}</h3>
-    <p>
-        Created {{ object.date_created }}<br>
-        Last updated {{ object.date_updated }}<br><br>
-        {{object.entry}}
-    </p>
+<a href="forum/threads">Return to main forum</a>
+<h2>{{ object.title }}</h2>
+{% if request.user == object.author.user %}
+    <p><a href="{% url 'forum:thread_update' object.pk %}">Edit Thread</a></p>
+{% endif %}
+<h3>{{ object.category }}</h3>
+<p>
+    Created {{ object.date_created }}<br>
+    Last updated {{ object.date_updated }}<br>
+    
+    {{ object.entry }}
+</p>
+
+<h3> Similar Threads </h3>
+<ol>
+{% for thread in similar_threads %}
+    <li><a href='{{ thread.get_absolute_url }}'>{{ thread.title }}</a></li>
+{% endfor %}
+</ol>
+
+{% for comment in comments %}
+    <b>{{ comment.author.display_name }}</b><sub>commented on {{ comment.date_created }}</sub>
+    <p>{{ comment.entry }}</p>
+{% endfor %}
+
+{% if request.user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form }}
+        <input type="submit" value="Submit">
+    </form>
+{% endif %}
 {% endblock %}

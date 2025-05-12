@@ -1,0 +1,12 @@
+{% extends 'base_with_login.html' %}
+
+{% block title %}Forum{% endblock %}
+
+{% block header %}Edit Thread{% endblock %}
+{% block content %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Post</button>
+    </form>
+{% endblock %}
