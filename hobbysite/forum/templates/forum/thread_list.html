@@ -1,12 +1,28 @@
-{% extends 'base.html' %}
+{% extends 'base_with_login.html' %}
 
 {% block title %}Forum{% endblock %}
 
 {% block header %}Forum{% endblock header %}
 {% block content %}
+{% if request.user.is_authenticated %}
+    <h1>Your Threads</h1>
     <ol>
-        {% for post in object_list %}
-        <li><a href="{{ post.get_absolute_url }}">{{ post }}</a></li>
+        {% for thread in my_threads %}
+        <li><a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a></li>
         {% endfor %}
     </ol>
+{% endif %}
+
+{% if request.user.is_authenticated %}
+    {% regroup other_threads by category as categorized_threads %}
+{% else %}
+    {% regroup object_list by category as categorized_threads %}
+{% endif %}
+<h1>Threads</h1>
+{% for category in categorized_threads %}
+    <h3>{{ category.grouper.name }}</h3>
+    {% for thread in category.list %}
+        <li><a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a></li>
+    {% endfor %}
+{% endfor %}
 {% endblock %}
