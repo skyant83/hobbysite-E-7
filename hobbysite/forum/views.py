@@ -1,3 +1,4 @@
+from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -30,24 +31,26 @@ class ThreadDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
-            context["similar_threads"] = \
-                Thread.objects.filter(category=self.get_object().category)
-            context["comments"] = \
+            context['similar_threads'] = \
+                Thread.objects.filter(category=self.get_object().category) \
+                              .exclude(pk=self.get_object().pk)
+            context['comments'] = \
                 Comment.objects.filter(thread=self.get_object())
+            context['comment_form'] = CommentForm()
         return context
 
     def post(self, request, *args, **kwargs):
-        comment = CommentForm(request.POST)
-        if comment.is_valid():
-            comment.save(commit=False)
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
             comment.author = Profile.objects.get(user=self.request.user)
-            comment.article = self.get_object()
+            comment.thread = self.get_object()
             comment.save()
-            return self.get(request, *args, **kwargs)
+            return redirect('forum:thread_detail', pk=self.kwargs['pk'])
         else:
-            self.object = self.get(**kwargs)
+            self.object = self.get_object()
             context = self.get_context_data(**kwargs)
-            context['comment_form'] = comment
+            context['comment_form'] = comment_form
             return self.render_to_response(context)
 
 
@@ -55,6 +58,10 @@ class ThreadCreateView(LoginRequiredMixin, CreateView):
     model = Thread
     fields = ['title', 'category', 'entry', 'image']
     template_name = 'forum/thread_create.html'
+
+    def form_valid(self, form):
+        form.instance.author = Profile.objects.get(user=self.request.user)
+        return super().form_valid(form)
 
 
 class ThreadUpdateView(LoginRequiredMixin, UpdateView):

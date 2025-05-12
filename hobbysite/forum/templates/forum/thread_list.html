@@ -5,6 +5,7 @@
 {% block header %}Forum{% endblock header %}
 {% block content %}
 {% if request.user.is_authenticated %}
+    <a href="{% url 'forum:thread_create' %}">Make new thread</a>
     <h1>Your Threads</h1>
     <ol>
         {% for thread in my_threads %}
