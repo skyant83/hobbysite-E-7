@@ -19,7 +19,7 @@ class ArticleAdmin(admin.ModelAdmin):
     fieldsets = (
         ("Article Information", {
             "fields": [
-                ("title", "category",),
+                ("title", "author", "category",),
                 "entry"
             ]
         }),

@@ -1,13 +1,31 @@
-{% extends 'base.html' %}
+{% extends 'base_with_login.html' %}
 {% load static %}
 {% block title %}Articles{% endblock %}
 {% block header %}Articles{% endblock header %}
 {% block content %}
-    <ul>
-        {% for article in object_list %}
-            <li>
-                <a href="{{ article.get_absolute_url }}">{{ article.title }} </a>
-            </li>
-        {% endfor %}
-    </ul>
+    <a href="{% url 'wiki:article_create' %}">Write an Article</a>
+    {% if request.user.is_authenticated %}
+        <p>My Articles</p>
+        <ul>
+            {% for article in user_articles %}
+                <li>
+                    <a href="{{ article.get_absolute_url }}">{{ article.title }} </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h3>All Articles</h3>
+    {% for category, articles in categories.items %}
+        {% if articles %}
+            <p>{{ category }}</p>
+        {% endif %}
+        <ul>
+            {% for article in articles %}
+                <li>
+                    <a href="{{ article.get_absolute_url }}">{{ article.title }} </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
 {% endblock %}
