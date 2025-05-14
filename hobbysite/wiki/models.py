@@ -21,7 +21,7 @@ class Article(models.Model):
     entry = models.TextField(null=True)
     header_image = models.ImageField(
         null=True,
-        upload_to='images/'
+        upload_to='images/wiki'
     )
     author = models.ForeignKey(
         Profile,
