@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 
 from user_management.models import Profile
-from .models import Product, TRANSACTION_STATUS, PRODUCT_STATUS
+from .models import Product
 from .forms import TransactionForm
 
 
