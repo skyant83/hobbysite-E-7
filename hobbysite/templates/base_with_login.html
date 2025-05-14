@@ -3,12 +3,12 @@
 {% block login %}
 {% if request.user.is_authenticated %}
     <h3> Logged in as {{ request.user.username }} <h3>
-    <form method="POST" action="{% url 'logout' %}">
+    <form method="POST" action="{% url 'accounts:logout' %}">
         {% csrf_token %}
         <button type="submit">Logout</button>
     </form>
 {% else %}
-    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'accounts:login' %}">Login</a>
 {% endif %}
 <br>
 {% endblock%}
