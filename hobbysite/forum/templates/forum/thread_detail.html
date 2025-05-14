@@ -13,9 +13,9 @@
 <p>
     Created {{ object.date_created }}<br>
     Last updated {{ object.date_updated }}<br>
-    {% if object.task_image %}
-        <img src="{{ object.task_image.url }}" alt="">
-    {% endif %}
+    {% if object.image %}
+        <img src="{{ object.image.url }}" alt="">
+    {% endif %}<br>
     {{ object.entry }}
 </p>
 
