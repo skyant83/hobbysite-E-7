@@ -4,13 +4,13 @@
 
 {% block title %}Merchandise Store{% endblock %}
 
-{% block header %}Cart{% endblock header %}
+{% block header %}Transaction List{% endblock header %}
 {% block content %}
     {% if request.user.is_authenticated %}
-        {% regroup product_cart by product.owner as owners %}
-        <h3>User's Cart</h3>
+        {% regroup transactions by product.owner as owners %}
+        <h3>Transaction List</h3>
         {% for owner in owners %}
-            <h4>{{ owner.grouper.name }}</h4>
+            <h4>{{ owner.grouper }}'s sales</h4>
             <ul>
                 {% for product in owner.list %}
                     <li>

@@ -3,7 +3,8 @@ from .views import (ProductListView,
                     ProductDetailView,
                     ProductCreateView,
                     ProductUpdateView,
-                    CartView)
+                    CartView,
+                    TransactionListView)
 
 urlpatterns = [
     path('items', ProductListView.as_view(), name='product_list'),
@@ -11,7 +12,7 @@ urlpatterns = [
     path('item/add', ProductCreateView.as_view(), name='product_create'),
     path('item/<int:pk>/edit', ProductUpdateView.as_view(), name='product_update'),
     path('cart', CartView.as_view(), name='cart_list'),
-    # path('transactions', TransactionListView.as_view(), name='transactions_list'),
+    path('transactions', TransactionListView.as_view(), name='transactions_list'),
 ]
 
 app_name = "merchstore"

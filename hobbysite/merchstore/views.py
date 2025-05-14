@@ -124,9 +124,7 @@ class TransactionListView(ListView):
     def get_context_data(self, **kwargs):
         ctx = super(TransactionListView, self).get_context_data(**kwargs)
 
-        owner = None
         if self.request.user.is_authenticated:
-            owner = Profile.objects.get(user=self.request.user)
-            ctx['product_cart'] = Transaction.objects.filter(buyer=owner)
+            ctx['transactions'] = Transaction.objects.all()
 
         return ctx

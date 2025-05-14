@@ -7,13 +7,17 @@
 {% block header %}Cart{% endblock header %}
 {% block content %}
     {% if request.user.is_authenticated %}
+        {% regroup product_cart by product.owner as owners %}
         <h3>User's Cart</h3>
+        {% for owner in owners %}
+            <h4>Products bought from {{ owner.grouper }}</h4>
             <ul>
-                {% for product in product_cart %}
+                {% for product in owner.list %}
                     <li>
-                        {{ product }}
+                        {{ product.amount }} {{ product.product }}
                     </li>
                 {% endfor %}
             </ul>
+        {% endfor %}
     {% endif %}
 {% endblock %}
