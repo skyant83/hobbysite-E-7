@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_with_login.html' %}
 
 {% load static %}
 
@@ -6,11 +6,32 @@
 
 {% block header %}Products{% endblock header %}
 {% block content %}
-    <ul>
-        {% for product in object_list %}
+    <a href="{% url 'merchstore:product_create' %}">Add a product</a>
+    {% if request.user.is_authenticated %}
+        <h3>User's Products</h3>
+            <ul>
+                {% for product in user_products %}
+                    <li>
+                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        <h3>All Products</h3>
+            <ul>
+                {% for product in all_products %}
+                    <li>
+                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+    {% else %}
+        <h3>All Products</h3>
+        <ul>
+            {% for product in object_list %}
             <li>
                 <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
             </li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}
