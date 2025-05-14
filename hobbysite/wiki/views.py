@@ -1,4 +1,5 @@
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
@@ -15,19 +16,6 @@ class ArticleDetailView(DetailView):
     model = Article
     template_name = 'wiki/article_detail.html'
 
-    def get_context_data(self, **kwargs):
-        ctx = super(ArticleDetailView, self).get_context_data(**kwargs)
-        curr_article = ctx['object']
-
-        ctx['pk'] = self.kwargs['pk']
-        ctx['form'] = CommentForm()
-        ctx['comments'] = Comment.objects.filter(article=curr_article)
-        ctx['same_cat_articles'] = (
-            Article.objects.filter(category=curr_article.category)
-            & Article.objects.exclude(pk=self.kwargs['pk'])
-        )
-        return ctx
-
     def post(self, request, *args, **kwargs):
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -40,6 +28,19 @@ class ArticleDetailView(DetailView):
             self.object_list = self.get_queryset(**kwargs)
             ctx = self.get_context_data(**kwargs)
             return self.render_to_response(ctx)
+
+    def get_context_data(self, **kwargs):
+        ctx = super(ArticleDetailView, self).get_context_data(**kwargs)
+        curr_article = ctx['object']
+
+        ctx['pk'] = self.kwargs['pk']
+        ctx['form'] = CommentForm()
+        ctx['comments'] = Comment.objects.filter(article=curr_article)
+        ctx['same_cat_articles'] = (
+            Article.objects.filter(category=curr_article.category)
+            & Article.objects.exclude(pk=self.kwargs['pk'])
+        )
+        return ctx
 
 
 class ArticleListView(ListView):
@@ -82,6 +83,12 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
         ctx['button_text'] = 'Publish Article'
         return ctx
 
+    def get_success_url(self):
+        return reverse_lazy(
+            'wiki:article_detail',
+            kwargs={'pk': self.object.pk}
+        )
+
 
 class ArticleUpdateView(LoginRequiredMixin, UpdateView):
     model = Article
@@ -89,8 +96,14 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'wiki/article_update_create.html'
 
     def get_context_data(self, **kwargs):
-        ctx = super(ArticleCreateView, self).get_context_data(**kwargs)
+        ctx = super(ArticleUpdateView, self).get_context_data(**kwargs)
         ctx['title'] = 'Update Article'
         ctx['header'] = 'Update Article'
         ctx['button_text'] = 'Edit Article'
         return ctx
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'wiki:article_detail',
+            kwargs={'pk': self.kwargs['pk']}
+        )

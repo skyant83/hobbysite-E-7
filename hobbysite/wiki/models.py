@@ -45,7 +45,7 @@ class Article(models.Model):
     )
 
     def __str__(self):
-        return f'{self.title}; Cat: {self.category}'
+        return f'{self.title} by {self.author}'
 
     def get_absolute_url(self):
         return reverse('wiki:article_detail', kwargs={'pk': self.pk})
@@ -79,7 +79,7 @@ class Comment(models.Model):
     )
 
     def __str__(self):
-        return self.author
+        return f"{self.author}'s comment on {self.article}."
 
     class Meta:
         ordering = ['-created_on']
