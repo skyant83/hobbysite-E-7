@@ -3,19 +3,19 @@ from django.urls import reverse
 
 from user_management.models import Profile
 
-PRODUCT_STATUS = [
-    'Available',
-    'On sale',
-    'Out of stock',
-]
+PRODUCT_STATUS = {
+    'AV': 'Available',
+    'OS': 'On sale',
+    'OOS': 'Out of stock',
+}
 
-TRANSACTION_STATUS = [
-    'On cart',
-    'To Pay',
-    'To Ship',
-    'To Receive',
-    'Delivered',
-]
+TRANSACTION_STATUS = {
+    'OC': 'On cart',
+    'TP': 'To Pay',
+    'TS': 'To Ship',
+    'TR': 'To Receive',
+    'DE': 'Delivered',
+}
 
 
 class ProductType(models.Model):
