@@ -1,6 +1,7 @@
 from django.views.generic.edit import UpdateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
+from django.template.defaultfilters import slugify
 
 from .models import Profile
 from .forms import RegistrationForm
@@ -28,9 +29,11 @@ class ProfileCreateView(FormView):
             user = form.save()
             profile = Profile(user=user,
                               display_name=form.cleaned_data['display_name'],
-                              email_address=user.email)
+                              email_address=user.email,
+                              slug=slugify(form.cleaned_data['display_name']))
             profile.save()
-            return redirect('user_management:profile_update', pk=user.pk)
+            return redirect('user_management:profile_update',
+                            slug=profile.slug)
         else:
             context = self.get_context_data(**kwargs)
             context['form'] = form
