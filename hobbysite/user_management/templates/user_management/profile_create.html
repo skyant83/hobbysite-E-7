@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}Registration{% endblock %}
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <p> You're already logged in! </p>
+        <form method="POST" action="{% url 'accounts:logout' %}">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    {% else %}
+        <form method='POST'>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Register">
+        </form>
+    {% endif %}
+{% endblock %}
