@@ -8,5 +8,5 @@ from .models import Profile
 # Create your views here.
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
-    fields = ['display_name', 'email_address']
+    fields = ['display_name']
     template_name = 'user_management/profile_detail.html'
