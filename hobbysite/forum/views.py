@@ -66,7 +66,7 @@ class ThreadCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('forum:thread_detail',
-                            kwargs={'pk': self.kwargs['pk']})
+                            kwargs={'pk': self.object.pk})
 
 
 class ThreadUpdateView(LoginRequiredMixin, UpdateView):
