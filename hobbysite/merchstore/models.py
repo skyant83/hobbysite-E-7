@@ -59,11 +59,13 @@ class Product(models.Model):
 class Transaction(models.Model):
     buyer = models.ForeignKey(
         Profile,
-        on_delete=models.SET_NULL
+        on_delete=models.SET_NULL,
+        null=True
     )
     product = models.ForeignKey(
         Product,
-        on_delete=models.SET_NULL
+        on_delete=models.SET_NULL,
+        null=True
     )
     amount = models.IntegerField()
     status = models.CharField(choices=TRANSACTION_STATUS)
