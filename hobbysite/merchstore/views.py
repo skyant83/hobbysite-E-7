@@ -1,11 +1,11 @@
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
+from django.views.generic import ListView, DetailView, UpdateView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
-from django.urls import reverse
+from django.urls import reverse_lazy, reverse
 
 from user_management.models import Profile
 from .models import Product
-from .forms import TransactionForm
+from .forms import TransactionForm, ProductForm
 
 
 class ProductListView(ListView):
@@ -54,7 +54,39 @@ class ProductDetailView(DetailView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         if 'transaction_amount' in request.session:
-            context['transaction_form'] = \
-                TransactionForm(amount=request.session['transaction_amount'])
+            context['transaction_form'] = TransactionForm()
             return self.render_to_response(context)
         return self.render_to_response(context)
+
+
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
+    form_class = ProductForm
+    model = Product
+    template_name = 'merchstore/product_edit.html'
+
+    def form_valid(self, form):
+        if form.instance.stock <= 0:
+            form.instance.stock = 0
+            form.instance.status = 'OOS'
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('merchstore:product_detail',
+                            kwargs={'pk': self.kwargs['pk']})
+
+
+class ProductCreateView(LoginRequiredMixin, CreateView):
+    form_class = ProductForm
+    model = Product
+    template_name = 'merchstore/product_create.html'
+
+    def form_valid(self, form):
+        if form.instance.stock <= 0:
+            form.instance.owner = Profile.objects.get(user=self.request.user)
+            form.instance.stock = 0
+            form.instance.status = 'OOS'
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('merchstore:product_detail',
+                            kwargs={'pk': self.object.pk})
