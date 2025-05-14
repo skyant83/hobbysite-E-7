@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 
 from user_management.models import Profile
-from .models import Product
+from .models import Product, Transaction
 from user_management.models import Profile
 from .forms import TransactionForm, ProductForm
 
@@ -19,7 +19,6 @@ class ProductListView(ListView):
         if self.request.user.is_authenticated:
             owner = Profile.objects.get(user=self.request.user)
             ctx['user_products'] = Product.objects.filter(owner=owner)
-
 
         ctx['all_products'] = Product.objects.exclude(owner=owner)
         return ctx
@@ -102,3 +101,32 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('merchstore:product_detail',
                             kwargs={'pk': self.object.pk})
+
+
+class CartView(ListView):
+    model = Product
+    template_name = 'merchstore/cart.html'
+    
+    def get_context_data(self, **kwargs):
+        ctx = super(CartView, self).get_context_data(**kwargs)
+
+        if self.request.user.is_authenticated:
+            owner = Profile.objects.get(user=self.request.user)
+            ctx['product_cart'] = Transaction.objects.filter(buyer=owner)
+
+        return ctx
+
+
+class TransactionListView(ListView):
+    model = Product
+    template_name = 'merchstore/transaction_list.html'
+    
+    def get_context_data(self, **kwargs):
+        ctx = super(TransactionListView, self).get_context_data(**kwargs)
+
+        owner = None
+        if self.request.user.is_authenticated:
+            owner = Profile.objects.get(user=self.request.user)
+            ctx['product_cart'] = Transaction.objects.filter(buyer=owner)
+
+        return ctx

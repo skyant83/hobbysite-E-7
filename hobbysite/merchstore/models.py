@@ -40,11 +40,11 @@ class Product(models.Model):
     owner = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
-        null=True,  # REMOVE
+        null=True
     )
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    stock = models.IntegerField(null=True)
+    stock = models.IntegerField(default=0)
     status = models.CharField(default='AV',
                               max_length=3,
                               choices=PRODUCT_STATUS)

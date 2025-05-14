@@ -1,0 +1,19 @@
+{% extends 'base_with_login.html' %}
+
+{% load static %}
+
+{% block title %}Merchandise Store{% endblock %}
+
+{% block header %}Cart{% endblock header %}
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <h3>User's Cart</h3>
+            <ul>
+                {% for product in product_cart %}
+                    <li>
+                        {{ product }}
+                    </li>
+                {% endfor %}
+            </ul>
+    {% endif %}
+{% endblock %}
