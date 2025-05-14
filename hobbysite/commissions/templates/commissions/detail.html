@@ -1,16 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'base_with_login.html' %}
 
 {% block title %}Commissions{% endblock %}
 
 {% block header %}Commissions{% endblock header %}
 {% block content %}
+    <a href="{% url 'commissions:update' %}">Edit Commission</a>
     <h2>{{ object.title }}</h2>
     <h3>{{ object.category }}</h3>
     <p>
         Created {{ object.date_created }}<br>
         Last updated {{ object.date_updated }}
         <hr>
-        Description: {{object.desc}}
-        Personel Required: {{object.required_ppl}} <br><br>
     </p>
 {% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base_with_login.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block header %}{{ header }}{% endblock header %}
+{% block content %}
+    <a href="{% url 'commissions:list' %}">Back to Commissions list</a>
+    <form method='POST' enctype='multipart/form-data'>
+        {% csrf_token %}
+        {{ form }}
+        <button type='submit'>{{ button_text }}</button>
+    </form>
+{% endblock %}

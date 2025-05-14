@@ -5,6 +5,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 
 from .models import Commission, JobApplication, Job
+from .forms import CommissionForm
 from user_management.models import Profile
 
 
@@ -48,9 +49,25 @@ class CommissionDetailView(DetailView):
 
 class CommissionCreateView(CreateView):
     model = Commission
-    template_name = "update_create.html"
+    form_class = CommissionForm
+    template_name = "commissions/update_create.html"
+
+    def get_context_data(self, **kwargs):
+        ctx = super(CommissionCreateView, self).get_context_data(**kwargs)
+        ctx['title'] = 'Create a Commission'
+        ctx['header'] = 'Create a Commission'
+        ctx['button_text'] = 'Publish Commission'
+        return ctx
 
 
 class CommissionUpdateView(UpdateView):
     model = Commission
-    template_name = "update_create.html"
+    form_class = CommissionForm
+    template_name = "commissions/update_create.html"
+
+    def get_context_data(self, **kwargs):
+        ctx = super(CommissionUpdateView, self).get_context_data(**kwargs)
+        ctx['title'] = 'Update Commission'
+        ctx['header'] = 'Update Commission'
+        ctx['button_text'] = 'Update'
+        return ctx

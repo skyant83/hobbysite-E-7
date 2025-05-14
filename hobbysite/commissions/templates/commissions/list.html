@@ -1,12 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'base_with_login.html' %}
 
 {% block title %}Commissions{% endblock %}
 
 {% block header %}Commissions{% endblock header %}
 {% block content %}
+    <a href="{% url 'commissions:create' %}">Place a Commission</a>
     <ol>
-        {% for post in object_list %}
-            <li><a href="{{ post.get_absolute_url }}">{{ post }}</a></li>
+        {% for commission in object_list %}
+            <li><a href="{{ commission.get_absolute_url }}">{{ commission }}</a></li>
         {% endfor %}
     </ol>
 {% endblock %}
