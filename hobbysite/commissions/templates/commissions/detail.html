@@ -4,12 +4,15 @@
 
 {% block header %}Commissions{% endblock header %}
 {% block content %}
-    <a href="{% url 'commissions:update' %}">Edit Commission</a>
+    <a href="{% url 'commissions:update' pk %}">Edit Commission</a>
     <h2>{{ object.title }}</h2>
-    <h3>{{ object.category }}</h3>
     <p>
-        Created {{ object.date_created }}<br>
-        Last updated {{ object.date_updated }}
+        Description:<br>
+        {{ object.description }}<br>
+    </p>
+    <p>
+        Created {{ object.created_on }}<br>
+        Last updated {{ object.updated_on}}
         <hr>
     </p>
 {% endblock %}

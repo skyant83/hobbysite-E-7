@@ -4,8 +4,10 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from .models import Commission, JobApplication, Job
-from .forms import CommissionForm
+from .forms import CommissionForm, JobFormSet
 from user_management.models import Profile
 
 
@@ -32,8 +34,10 @@ class CommissionDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super(CommissionDetailView, self).get_context_data(**kwargs)
+        ctx['pk'] = self.kwargs['pk']
         ctx["manpower_sum"] = 0
         ctx["manpower_open"] = 0
+        return ctx
 
     def post(self, request, *args, **kwargs):
         curr_commission = Commission.objects.get(pk=self.kwargs["pk"])
@@ -47,27 +51,60 @@ class CommissionDetailView(DetailView):
         return redirect("commissions:detail", pk=self.kwargs["pk"])
 
 
-class CommissionCreateView(CreateView):
+class CommissionCreateView(LoginRequiredMixin, CreateView):
     model = Commission
     form_class = CommissionForm
     template_name = "commissions/update_create.html"
+
+    def post(self, request, *args, **kwargs):
+        commission_form = CommissionForm(request.POST)
+        job_set = JobFormSet(request.POST)
+
+        if commission_form.is_valid() and job_set.is_valid():
+            commission = commission_form.save(commit=False)
+            commission.author = Profile.objects.get(user=self.request.user)
+            commission.save()
+
+            for jobs in job_set:
+                job = jobs.save(commit=False)
+                job.commission = commission
+                job.save()
+
+            return redirect('commissions:detail', pk=commission.pk)
+
+        self.object_list = self.get_queryset(**kwargs)
+        ctx = self.get_context_data(**kwargs)
+        return self.render_to_response(ctx)
 
     def get_context_data(self, **kwargs):
         ctx = super(CommissionCreateView, self).get_context_data(**kwargs)
         ctx['title'] = 'Create a Commission'
         ctx['header'] = 'Create a Commission'
         ctx['button_text'] = 'Publish Commission'
+        ctx['commission_form'] = CommissionForm()
+        ctx['job_form'] = JobFormSet()
         return ctx
 
 
-class CommissionUpdateView(UpdateView):
+class CommissionUpdateView(LoginRequiredMixin, UpdateView):
     model = Commission
     form_class = CommissionForm
     template_name = "commissions/update_create.html"
 
     def get_context_data(self, **kwargs):
+        curr_commission = Commission.objects.get(pk=self.kwargs['pk'])
         ctx = super(CommissionUpdateView, self).get_context_data(**kwargs)
         ctx['title'] = 'Update Commission'
         ctx['header'] = 'Update Commission'
         ctx['button_text'] = 'Update'
+
+        ctx['commission_form'] = CommissionForm(instance=curr_commission)
+        if self.request.POST:
+            ctx['job_form'] = JobFormSet(
+                self.request.POST,
+                instance=self.object
+            )
+        else:
+            ctx['job_form'] = JobFormSet(instance=self.object)
+
         return ctx
