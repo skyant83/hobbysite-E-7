@@ -4,10 +4,38 @@
 
 {% block header %}Commissions{% endblock header %}
 {% block content %}
-    <a href="{% url 'commissions:create' %}">Place a Commission</a>
+    <p style="font-size: 120%">MY COMMISSIONS:</p>
+        <a href="{% url 'commissions:create' %}">CREATE NEW</a>
+    <ol>
+        
+        {% for commission in object_list %}
+            {% if commission.author.user == request.user %}
+                <li><a href="{{ commission.get_absolute_url }}">{{ commission }}</a><br>
+                      STATUS
+                    <ul>
+                        <li>{{ commission.status|upper }}</li>
+                    </ul>
+                </li>
+            {% endif %}
+
+            {% empty %}
+                <pre>None</pre>
+        {% endfor %}
+    </ol>
+
+    <p style="font-size: 120%"><br>COMMISSIONS:</p>
     <ol>
         {% for commission in object_list %}
-            <li><a href="{{ commission.get_absolute_url }}">{{ commission }}</a></li>
+            <li><a href="{{ commission.get_absolute_url }}">{{ commission }}</a><br>
+                  STATUS
+                <ul>
+                    <li>{{ commission.status|upper }}</li>
+                </ul>
+            </li>
+
+        {% empty %}
+            No commissions yet!
+
         {% endfor %}
     </ol>
 {% endblock %}

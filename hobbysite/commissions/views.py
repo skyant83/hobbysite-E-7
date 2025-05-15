@@ -33,10 +33,10 @@ class CommissionDetailView(DetailView):
     template_name = "commissions/detail.html"
 
     def get_context_data(self, **kwargs):
+        current_commission = Commission.objects.get(pk=self.kwargs['pk'])
         ctx = super(CommissionDetailView, self).get_context_data(**kwargs)
         ctx['pk'] = self.kwargs['pk']
-        ctx["manpower_sum"] = 0
-        ctx["manpower_open"] = 0
+        ctx["jobs"] = Job.objects.filter(commission=current_commission)
         return ctx
 
     def post(self, request, *args, **kwargs):

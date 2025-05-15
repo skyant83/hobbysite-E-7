@@ -4,15 +4,38 @@
 
 {% block header %}Commissions{% endblock header %}
 {% block content %}
-    <a href="{% url 'commissions:update' pk %}">Edit Commission</a>
-    <h2>{{ object.title }}</h2>
-    <p>
-        Description:<br>
-        {{ object.description }}<br>
+    <p style="font-size:150%">{{ object.title }}
+    {% if object.author.user == request.user %}
+         - <a href="{% url 'commissions:update' pk %}">EDIT</a>
+    {% endif %}
     </p>
-    <p>
-        Created {{ object.created_on }}<br>
-        Last updated {{ object.updated_on}}
-        <hr>
+    <p style="font-size:100%">POSTED BY: {{ object.author }}</p>    
+    <p style="font-size:75%">
+        CREATED: {{ object.created_on }}<br>
+        UPDATED: {{ object.updated_on}}        
     </p>
+
+    <p><br>DESCRIPTION:</p>
+    <p style="font-size:90%">{{ object.description }}<br></p>    
+
+    <p><br>POSITIONS:</p>
+    <ol>
+        {% for job in jobs %}
+            <li>{{ job.role }} /{{ job.manpower_required }}</li>
+                <ul>
+                    <li>
+                        {% if job.status == 'open' and object.author.user != request.user %}
+                            <button type="button"> 
+                                APPLY
+                            </button>
+                        {% endif %}
+                    </li>
+                </ul>
+            {% empty %}
+                No jobs provided!
+        {% endfor %}
+    </ol>
+    
+    <hr>
+    
 {% endblock %}

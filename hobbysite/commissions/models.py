@@ -16,7 +16,8 @@ class Commission(models.Model):
             'complete': 'Completed',
             'discontinued': 'Discontinued'
         },
-        default='open'
+        default='open',
+        max_length=255
     )
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -37,16 +38,18 @@ class Job(models.Model):
     )
     role = models.CharField(max_length=255)
     manpower_required = models.IntegerField()
+    #manpower_accepted = models.IntegerField()
     status = models.CharField(
         choices={
             'open': 'Open',
             'full': 'Full',
         },
-        default='open'
+        default='open',
+        max_length=255
     )
 
     class Meta:
-        ordering = ['status']
+        ordering = ['-status']
 
 
 class JobApplication(models.Model):
@@ -62,9 +65,10 @@ class JobApplication(models.Model):
             'accepted': 'Accepted',
             'rejected': 'Rejected'
         },
-        default='pending'
+        default='pending',
+        max_length=255
     )
     applied_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['status', 'applied_on']
+        ordering = ['applied_on']
