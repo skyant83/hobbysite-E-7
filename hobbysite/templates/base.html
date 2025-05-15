@@ -1,14 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>{% block title %} App Title {% endblock %}</title>
+        <style>
+            header{
+                background-color: #181616;
+                display: flex;
+                justify-content: space-around;
+                position: sticky;
+                top: 0px;
+            }
+            header ul{
+                padding: 0;
+            }
+            nav li{
+                display: inline;
+                margin: 10px;
+            }
+            a:link, a:visited{
+                color: #FF4545;
+                text-decoration: none;
+            }
+            a:hover{
+                text-decoration: underline;
+            }
+            body{
+                background-color: #212121;
+                color: #FFFFFF;
+                /* margin: 0; */
+            }
+            .block_header{
+                display: flex;
+                justify-content: space-around;
+            }
+            .content{
+                margin: 0px 30px;
+            }
+        </style>
         {% block styles %}{% endblock %}
     </head>
     <body>
-        <h1>{% block header %}Header{% endblock header %}</h1>
-        {% block login %}{% endblock %}
-        {% block content %}{% endblock %}
+        <main>
+            <header>
+                <nav>
+                    <strong>
+                        <ul>
+                            <li><a href="{% url 'blog:articles' %}">Blog</a></li>
+                            <li><a href="{% url 'commisions:list' %}">Commissions</a></li>
+                            <li><a href="{% url 'forum:post_list' %}">Forum</a></li>
+                            <li><a href="{% url 'merchstore:product_list' %}">Merchstore</a></li>
+                            <li><a href="{% url 'wiki:articles_list' %}">Wiki</a></li>
+                        </ul>
+                    </strong>
+                </nav>
+            </header>
+            <h1 class="block_header">
+                {% block header %}Header{% endblock header %}
+            </h1>
+            <section class="login">
+                {% block login %}{% endblock %}
+            </section>
+            <section class="content">
+                {% block content %}{% endblock %}
+            </section>
+        </main>
     </body>
 </html>
