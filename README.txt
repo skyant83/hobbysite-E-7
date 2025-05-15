@@ -1,5 +1,5 @@
 Badiola, Enrique Gabriel
 Dorde, Andre Benedict
-Pascual, Eizekiel
-Tabo, Ken Jonree Tabo
-Villegas, Noah
+Pascual, Eizekiel Pierre
+Tabo, Ken Jonree
+Villegas, Noah Jacob
