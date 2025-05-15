@@ -22,16 +22,20 @@ class CommissionListView(ListView):
         if self.request.user.is_authenticated:
             curr_user = Profile.objects.get(user=self.request.user)
 
-            ctx["commission_list"] = ChoiceSort(commission_choices,
-            Commission.objects.all())
+            ctx["commission_list"] = ChoiceSort(
+                commission_choices,
+                Commission.objects.all())
 
-            ctx["commissions_placed"] = ChoiceSort(commission_choices, 
-            Commission.objects.filter(author=curr_user))
-            
-            ctx["commissions_applied"] = ChoiceSort(commission_choices, 
-            JobApplication.objects.filter(applicant=curr_user))
-            
+            ctx["commissions_placed"] = ChoiceSort(
+                commission_choices,
+                Commission.objects.filter(author=curr_user))
+
+            ctx["commissions_applied"] = ChoiceSort(
+                commission_choices,
+                JobApplication.objects.filter(applicant=curr_user))
+
         return ctx
+
 
 class CommissionDetailView(DetailView):
     model = Commission
@@ -96,6 +100,26 @@ class CommissionUpdateView(LoginRequiredMixin, UpdateView):
     form_class = CommissionForm
     template_name = "commissions/update_create.html"
 
+    def post(self, request, *args, **kwargs):
+        curr_commission = Commission.objects.get(pk=self.kwargs['pk'])
+        commission_form = CommissionForm(
+            request.POST, instance=curr_commission)
+        job_set = JobFormSet(
+            request.POST, instance=curr_commission)
+
+        if commission_form.is_valid():
+            commission = commission_form.save(commit=False)
+            commission.author = Profile.objects.get(user=self.request.user)
+            commission.save()
+
+        if job_set.is_valid():
+            jobs = job_set.save(commit=False)
+            for job in jobs:
+                job.commission = commission
+                job.save()
+
+        return redirect('commissions:detail', pk=commission.pk)
+
     def get_context_data(self, **kwargs):
         curr_commission = Commission.objects.get(pk=self.kwargs['pk'])
         ctx = super(CommissionUpdateView, self).get_context_data(**kwargs)
@@ -114,12 +138,13 @@ class CommissionUpdateView(LoginRequiredMixin, UpdateView):
 
         return ctx
 
-def ChoiceSort(Choices, ToBeSorted):
-        output = []
-    
-        for choice in Choices:
-            for entry in ToBeSorted:
-                if entry.status == choice:
-                    output.append(entry)
 
-        return output
+def ChoiceSort(Choices, ToBeSorted):
+    output = []
+
+    for choice in Choices:
+        for entry in ToBeSorted:
+            if entry.status == choice:
+                output.append(entry)
+
+    return output
