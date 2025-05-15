@@ -5,13 +5,13 @@ from django.urls import reverse_lazy, reverse
 
 from user_management.models import Profile
 from .models import Product, Transaction
-from user_management.models import Profile
 from .forms import TransactionForm, ProductForm
 
 
 class ProductListView(ListView):
     model = Product
     template_name = 'merchstore/products_list.html'
+
     def get_context_data(self, **kwargs):
         ctx = super(ProductListView, self).get_context_data(**kwargs)
 
@@ -106,7 +106,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 class CartView(ListView):
     model = Product
     template_name = 'merchstore/cart.html'
-    
+
     def get_context_data(self, **kwargs):
         ctx = super(CartView, self).get_context_data(**kwargs)
 
@@ -120,7 +120,7 @@ class CartView(ListView):
 class TransactionListView(ListView):
     model = Product
     template_name = 'merchstore/transaction_list.html'
-    
+
     def get_context_data(self, **kwargs):
         ctx = super(TransactionListView, self).get_context_data(**kwargs)
 
