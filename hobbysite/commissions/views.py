@@ -70,8 +70,8 @@ class CommissionCreateView(LoginRequiredMixin, CreateView):
             commission.author = Profile.objects.get(user=self.request.user)
             commission.save()
 
-            for jobs in job_set:
-                job = jobs.save(commit=False)
+            jobs = job_set.save(commit=False)
+            for job in jobs:
                 job.commission = commission
                 job.save()
 
