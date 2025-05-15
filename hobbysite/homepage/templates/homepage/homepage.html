@@ -1,0 +1,18 @@
+{% extends 'base_with_login.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block header %} Hobby Site {% endblock header %}
+{% block content %}
+    <br><a href="{% url 'merchstore:product-list'%}">Merchstore</a>
+    <br><a href="{% url 'wiki:articles_list'%}">Online Wiki</a>
+    <br><a href="{% url 'blog:articles'%}">Blog</a>
+    <br><a href="{% url 'forum:post_list'%}">Forum</a>
+    <br><a href="{% url 'commisions:list'%}">Commission</a><br>
+    
+    <h2>Members:</h2>
+    <ul>
+        {% for member in members %}
+            <li><p>{{ member }}</p></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

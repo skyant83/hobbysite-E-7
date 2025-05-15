@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'merchstore',
     'user_management',
     'accounts',
+    'homepage',
 ]
 
 MIDDLEWARE = [
