@@ -8,7 +8,7 @@ def index(request):
             'Dorde, Andre Benedict',
             'Pascual, Eizekiel Pierre',
             'Tabo, Ken Jonree',
-            'Villegas, Jacob Noah',
+            'Villegas, Noah Jacob',
         ]
     }
     return render(request, 'homepage/homepage.html', ctx)
