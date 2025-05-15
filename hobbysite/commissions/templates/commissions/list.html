@@ -7,25 +7,22 @@
     <p style="font-size: 120%">MY COMMISSIONS:</p>
         <a href="{% url 'commissions:create' %}">CREATE NEW</a>
     <ol>
-        
-        {% for commission in object_list %}
-            {% if commission.author.user == request.user %}
+        {% for commission in commissions_placed %}
                 <li><a href="{{ commission.get_absolute_url }}">{{ commission }}</a><br>
                       STATUS
                     <ul>
                         <li>{{ commission.status|upper }}</li>
                     </ul>
                 </li>
-            {% endif %}
 
-            {% empty %}
-                <pre>None</pre>
+                {% empty %}
+                    <p style="font-size: medium">NONE</p>
         {% endfor %}
     </ol>
 
-    <p style="font-size: 120%"><br>COMMISSIONS:</p>
+    <p style="font-size: 120%"><br>APPLIED TO:</p>
     <ol>
-        {% for commission in object_list %}
+        {% for commission in commissions_applied %}
             <li><a href="{{ commission.get_absolute_url }}">{{ commission }}</a><br>
                   STATUS
                 <ul>
@@ -33,9 +30,23 @@
                 </ul>
             </li>
 
-        {% empty %}
-            No commissions yet!
+            {% empty %}
+                <p style="font-size: medium">NONE</p>
+        {% endfor %}
+    </ol>
+    
+    <p style="font-size: 120%"><br>COMMISSIONS:</p>
+    <ol>
+        {% for commission in commission_list %}
+            <li><a href="{{ commission.get_absolute_url }}">{{ commission }}</a><br>
+                  STATUS
+                <ul>
+                    <li>{{ commission.status|upper }}</li>
+                </ul>
+            </li>
 
+            {% empty %}
+                <p style="font-size: medium">NONE</p>
         {% endfor %}
     </ol>
 {% endblock %}
