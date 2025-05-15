@@ -1,14 +1,21 @@
 {% extends 'base.html' %}
 
 {% block login %}
-{% if request.user.is_authenticated %}
-    <h3> Logged in as {{ request.user.username }} <h3>
-    <form method="POST" action="{% url 'accounts:logout' %}">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
-{% else %}
-    <a href="{% url 'accounts:login' %}">Login</a>
-{% endif %}
-<br>
+    <div style="
+        display: flex;
+        align-items: center;
+        justify-content: right;
+        gap: 1em;">
+        {% if request.user.is_authenticated %}
+            <form method="POST" action="{% url 'accounts:logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+            <h3> Logged in as {{ request.user.username }} <h3>
+        {% else %}
+            <a href="{% url 'accounts:login' %}?next={{request.path}}">
+                <button>Login</button>
+            </a>
+        {% endif %}
+    </div>
 {% endblock%}
