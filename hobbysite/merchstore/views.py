@@ -47,6 +47,7 @@ class ProductDetailView(DetailView):
                 updated_stock = product.stock - transaction.amount
                 if updated_stock <= 0:
                     updated_stock = 0
+                    transaction.amount = product.stock
                     product.status = 'OOS'
                 product.stock = updated_stock
                 product.save()
