@@ -1,0 +1,12 @@
+{% extends 'base_with_login.html' %}
+
+{% block title %}Merchstore{% endblock %}
+
+{% block header %}Update Product{% endblock %}
+{% block content %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Update Product</button>
+    </form>
+{% endblock %}

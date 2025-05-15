@@ -1,0 +1,39 @@
+{% extends 'base_with_login.html' %}
+
+{% load static %}
+
+{% block title %}Merchandise Store{% endblock %}
+
+{% block header %}Products{% endblock header %}
+{% block content %}
+    <a href="{% url 'merchstore:product_create' %}">Add a product</a><br>
+    <a href="{% url 'merchstore:cart_list' %}">View Cart</a><br>
+    <a href="{% url 'merchstore:transactions_list' %}">View Sold Transactions</a>
+    {% if request.user.is_authenticated %}
+        <h3>Your Products</h3>
+            <ul>
+                {% for product in user_products %}
+                    <li>
+                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        <h3>All Products</h3>
+            <ul>
+                {% for product in all_products %}
+                    <li>
+                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+    {% else %}
+        <h3>All Products</h3>
+        <ul>
+            {% for product in object_list %}
+            <li>
+                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

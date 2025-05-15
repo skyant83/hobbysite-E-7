@@ -1,0 +1,23 @@
+{% extends 'base_with_login.html' %}
+
+{% load static %}
+
+{% block title %}Merchandise Store{% endblock %}
+
+{% block header %}Transaction List{% endblock header %}
+{% block content %}
+    {% if request.user.is_authenticated %}
+        {% regroup sold_transactions by product.owner as owners %}
+        <h3>Transaction List</h3>
+        {% for owner in owners %}
+            <h4>{{ owner.grouper }}'s sales</h4>
+            <ul>
+                {% for product in owner.list %}
+                    <li>
+                        {{ product }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

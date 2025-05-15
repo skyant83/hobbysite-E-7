@@ -1,0 +1,23 @@
+{% extends 'base_with_login.html' %}
+
+{% load static %}
+
+{% block title %}Merchandise Store{% endblock %}
+
+{% block header %}Cart{% endblock header %}
+{% block content %}
+    {% if request.user.is_authenticated %}
+        {% regroup product_cart by product.owner as owners %}
+        <h3>Your Cart</h3>
+        {% for owner in owners %}
+            <h4>Products bought from {{ owner.grouper }}</h4>
+            <ul>
+                {% for product in owner.list %}
+                    <li>
+                        {{ product.amount }} {{ product.product }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_with_login.html' %}
 
 {% load static %}
 
@@ -9,4 +9,21 @@
     <h3>{{ object.product_type }}</h3>
     <h3>{{ object.description }}</h3>
     <h3>₱{{ object.price }}</h3>
+    <h3>Owned by: {{ object.owner.display_name }}</h3>
+    <h3>Stock: {{ object.stock }}</h3>
+    <h3>{{ object.get_status_display }}</h3>
+    {% if object.owner.user == request.user %}
+        <a href="{% url 'merchstore:product_update' object.pk %}">Edit Product</a>
+    {% else %}
+        <form method='POST'>
+            {% csrf_token %}
+            {{ transaction_form }}
+            {% if object.stock > 0 %}
+                <input type='submit' value='Buy'>
+            {% else %}
+                <input disabled value='Buy'>
+            {% endif %}
+        </form>
+    {% endif %}
+    <a href="{% url 'merchstore:product_list' %}">Return to merchstore</a>
 {% endblock %}
