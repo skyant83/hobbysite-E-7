@@ -7,7 +7,7 @@
 {% block header %}Transaction List{% endblock header %}
 {% block content %}
     {% if request.user.is_authenticated %}
-        {% regroup transactions by product.owner as owners %}
+        {% regroup sold_transactions by product.owner as owners %}
         <h3>Transaction List</h3>
         {% for owner in owners %}
             <h4>{{ owner.grouper }}'s sales</h4>

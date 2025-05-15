@@ -51,7 +51,7 @@ class ProductDetailView(DetailView):
                 product.stock = updated_stock
                 product.save()
                 transaction.save()
-                return redirect('merchstore:cart_list', pk=self.kwargs['pk'])
+                return redirect('merchstore:cart_list')
             else:
                 request.session['transaction_amount'] = \
                     form.cleaned_data['amount']
@@ -65,7 +65,9 @@ class ProductDetailView(DetailView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         if 'transaction_amount' in request.session:
-            context['transaction_form'] = TransactionForm()
+            form = TransactionForm(
+                initial={'amount': request.session['transaction_amount']})
+            context['transaction_form'] = form
             return self.render_to_response(context)
         return self.render_to_response(context)
 
@@ -79,6 +81,8 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         if form.instance.stock <= 0:
             form.instance.stock = 0
             form.instance.status = 'OOS'
+        else:
+            form.instance.status = 'AV'
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -92,8 +96,8 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     template_name = 'merchstore/product_create.html'
 
     def form_valid(self, form):
+        form.instance.owner = Profile.objects.get(user=self.request.user)
         if form.instance.stock <= 0:
-            form.instance.owner = Profile.objects.get(user=self.request.user)
             form.instance.stock = 0
             form.instance.status = 'OOS'
         return super().form_valid(form)
@@ -109,11 +113,9 @@ class CartView(ListView):
 
     def get_context_data(self, **kwargs):
         ctx = super(CartView, self).get_context_data(**kwargs)
-
         if self.request.user.is_authenticated:
             owner = Profile.objects.get(user=self.request.user)
             ctx['product_cart'] = Transaction.objects.filter(buyer=owner)
-
         return ctx
 
 
@@ -123,8 +125,8 @@ class TransactionListView(ListView):
 
     def get_context_data(self, **kwargs):
         ctx = super(TransactionListView, self).get_context_data(**kwargs)
-
         if self.request.user.is_authenticated:
-            ctx['transactions'] = Transaction.objects.all()
-
+            current_profile = Profile.objects.get(user=self.request.user)
+            ctx['sold_transactions'] = \
+                Transaction.objects.filter(product__owner=current_profile)
         return ctx

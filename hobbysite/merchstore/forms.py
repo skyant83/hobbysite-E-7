@@ -4,6 +4,8 @@ from .models import Transaction, Product, PRODUCT_STATUS, TRANSACTION_STATUS
 
 
 class TransactionForm(forms.ModelForm):
+    amount = forms.IntegerField()
+
     class Meta:
         model = Transaction
         fields = ['amount']

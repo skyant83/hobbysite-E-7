@@ -8,7 +8,7 @@
 {% block content %}
     {% if request.user.is_authenticated %}
         {% regroup product_cart by product.owner as owners %}
-        <h3>User's Cart</h3>
+        <h3>Your Cart</h3>
         {% for owner in owners %}
             <h4>Products bought from {{ owner.grouper }}</h4>
             <ul>

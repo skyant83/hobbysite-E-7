@@ -6,9 +6,11 @@
 
 {% block header %}Products{% endblock header %}
 {% block content %}
-    <a href="{% url 'merchstore:product_create' %}">Add a product</a>
+    <a href="{% url 'merchstore:product_create' %}">Add a product</a><br>
+    <a href="{% url 'merchstore:cart_list' %}">View Cart</a><br>
+    <a href="{% url 'merchstore:transactions_list' %}">View Sold Transactions</a>
     {% if request.user.is_authenticated %}
-        <h3>User's Products</h3>
+        <h3>Your Products</h3>
             <ul>
                 {% for product in user_products %}
                     <li>
