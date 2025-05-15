@@ -11,7 +11,7 @@ class CommissionForm(forms.ModelForm):
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['role', 'manpower_required']
+        fields = ['role', 'manpower_required', 'status']
 
 
 JobFormSet = forms.inlineformset_factory(

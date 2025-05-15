@@ -38,7 +38,6 @@ class Job(models.Model):
     )
     role = models.CharField(max_length=255)
     manpower_required = models.IntegerField()
-    #manpower_accepted = models.IntegerField()
     status = models.CharField(
         choices={
             'open': 'Open',
@@ -47,6 +46,9 @@ class Job(models.Model):
         default='open',
         max_length=255
     )
+
+    def __str__(self):
+        return self.role
 
     class Meta:
         ordering = ['-status']
@@ -69,6 +71,9 @@ class JobApplication(models.Model):
         max_length=255
     )
     applied_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.job} application by {self.applicant}'
 
     class Meta:
         ordering = ['applied_on']
