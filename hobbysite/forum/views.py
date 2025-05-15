@@ -33,10 +33,10 @@ class ThreadDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['similar_threads'] = \
             Thread.objects.filter(category=self.get_object().category) \
-                            .exclude(pk=self.get_object().pk)
+                          .exclude(pk=self.get_object().pk)
+        context['comments'] = \
+            Comment.objects.filter(thread=self.get_object())
         if self.request.user.is_authenticated:
-            context['comments'] = \
-                Comment.objects.filter(thread=self.get_object())
             context['comment_form'] = CommentForm()
         return context
 
