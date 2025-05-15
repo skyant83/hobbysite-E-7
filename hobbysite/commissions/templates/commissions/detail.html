@@ -4,38 +4,48 @@
 
 {% block header %}Commissions{% endblock header %}
 {% block content %}
+    <br><a href="{% url 'commissions:list' %}"><button>Back</button></a>
     <p style="font-size:150%">{{ object.title }}
     {% if object.author.user == request.user %}
          - <a href="{% url 'commissions:update' pk %}">EDIT</a>
     {% endif %}
     </p>
-    <p style="font-size:100%">POSTED BY: {{ object.author }}</p>    
+    <p style="font-size:100%">POSTED BY: {{ object.author }}</p>
     <p style="font-size:75%">
         CREATED: {{ object.created_on }}<br>
-        UPDATED: {{ object.updated_on}}        
+        UPDATED: {{ object.updated_on}}
     </p>
 
+    <p style="font-size:75%">status: {{object.status|title}} </p>
+
     <p><br>DESCRIPTION:</p>
-    <p style="font-size:90%">{{ object.description }}<br></p>    
+    <p style="font-size:90%">{{ object.description }}<br></p>
 
     <p><br>POSITIONS:</p>
     <ol>
-        {% for job in jobs %}
-            <li>{{ job.role }} /{{ job.manpower_required }}</li>
-                <ul>
+        {% for job, hired in applications.items %}
+            <li>
+                {{ job.role }} <br>
+                {% widthratio hired 1 -1 as result %}
+
+                {{ job.manpower_required|add:result}} out of
+                {{ job.manpower_required }} slots available
+            </li>
+            <ul>
+                {% if job.status == 'open' and object.author.user != request.user %}
                     <li>
-                        {% if job.status == 'open' and object.author.user != request.user %}
-                            <button type="button"> 
-                                APPLY
-                            </button>
-                        {% endif %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="{{job.role}}">APPLY</button>
+                        </form>
                     </li>
-                </ul>
+                {% endif %}
+            </ul>
             {% empty %}
                 No jobs provided!
         {% endfor %}
     </ol>
-    
+
     <hr>
-    
+
 {% endblock %}

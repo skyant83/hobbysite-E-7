@@ -45,17 +45,41 @@ class CommissionDetailView(DetailView):
         current_commission = Commission.objects.get(pk=self.kwargs['pk'])
         ctx = super(CommissionDetailView, self).get_context_data(**kwargs)
         ctx['pk'] = self.kwargs['pk']
-        ctx["jobs"] = Job.objects.filter(commission=current_commission)
+        ctx['jobs'] = Job.objects.filter(commission=current_commission)
+
+        jobs_applications = {}
+        for job in ctx['jobs']:
+            no_pos_filled = (
+                JobApplication.objects.filter(job=job) &
+                JobApplication.objects.filter(status='accepted')
+            ).__len__()
+
+            if job.manpower_required == no_pos_filled:
+                job.status = 'full'
+                job.save()
+
+            jobs_applications[job] = no_pos_filled
+
+        job_listing = (ctx['jobs'] & Job.objects.filter(status='full')).__len__()
+        if job_listing == ctx['jobs'].__len__():
+            current_commission.status = 'full'
+            current_commission.save()
+
+        ctx['applications'] = jobs_applications
         return ctx
 
     def post(self, request, *args, **kwargs):
         curr_commission = Commission.objects.get(pk=self.kwargs["pk"])
         curr_user = Profile.objects.get(user=self.request.user)
 
-        form = JobApplication()
-        form.job = Job.objects.get(commission=curr_commission)
-        form.applicant = Profile.objects.get(user=curr_user)
-        form.save()
+        for job in Job.objects.filter(commission=curr_commission):
+            some_key = request.POST.get(job.role, None)
+            if some_key is not None:
+                JobApplication.objects.create(
+                    job=job,
+                    applicant=curr_user,
+                    status='pending'
+                )
 
         return redirect("commissions:detail", pk=self.kwargs["pk"])
 
