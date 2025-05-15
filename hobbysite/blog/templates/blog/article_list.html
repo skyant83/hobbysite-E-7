@@ -1,14 +1,45 @@
-{% extends 'base.html' %}
+{% extends 'base_with_login.html' %}
 {% block header %} Posted Blogs {% endblock header %}
 {% block content %}
-    <ul>
-        {% for article in object_list %}
-            <li>
-                <a href="{{article.get_absolute_url}}">{{article.title}}</a>
-                <br>
-                <sub>Posted: {{article.created_on|date:"h:i A    N t, Y"}} </sub>
-            </li>
-            <br>
+
+    {% if request.user.is_authenticated %}
+        <h2>My Articles</h2>
+        {% for category, articles in author_categories.items %}
+            {% if category %}
+                <h4> {{ category }} </h4>
+                {% for article in articles %}
+                    <ul>
+                        <li>
+                            <a href="{{article.get_absolute_url}}">{{article.title}}</a>
+                        </li>
+                    </ul>
+                {% empty %}
+                    <blockquote>You Have No Article In This Category</blockquote>
+                {% endfor %}
+            {% else %}
+                You Have Articles
+            {% endif %}
         {% endfor %}
-    </ul>
+        <a href="{% url 'blog:create_article' %}"><button>New Article</button></a>
+    {% endif %}
+
+
+    <h2>All Articles</h2>
+    {% for category, articles in categories.items %}
+        {% if category %}
+            <h4> {{ category }} </h4>
+            {% for article in articles %}
+                <ul>
+                    <li>
+                        <a href="{{article.get_absolute_url}}">{{article.title}}</a>
+                    </li>
+                </ul>
+            {% empty %}
+                <blockquote>No Article In This Category</blockquote>
+            {% endfor %}
+        {% else %}
+            No Articles Available
+        {% endif %}
+    {% endfor %}
+    <br>
 {% endblock content %}
