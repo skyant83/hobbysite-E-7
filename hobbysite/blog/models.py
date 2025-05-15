@@ -25,7 +25,7 @@ class Article(models.Model):
         Profile,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='author'
+        related_name='blog_author'
     )
     category = models.ForeignKey(
                         ArticleCategory,
@@ -61,7 +61,10 @@ class Article(models.Model):
 
 class Comment(models.Model):
     '''Model definition for Comment.'''
-    author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(Profile,
+                               on_delete=models.SET_NULL,
+                               null=True,
+                               related_name='comment_author')
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     entry = models.TextField(blank=True, null=True)
     created_on = models.DateTimeField(

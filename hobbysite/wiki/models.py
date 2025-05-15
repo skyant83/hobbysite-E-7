@@ -62,7 +62,7 @@ class Comment(models.Model):
         Profile,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='comment_author'
+        related_name='wiki_comment_author'
     )
     article = models.ForeignKey(
         Article,
