@@ -1,0 +1,13 @@
+{% extends 'base_with_login.html' %}
+
+{% block title %}Forum{% endblock %}
+
+{% block header %}New Thread{% endblock %}
+{% block content %}
+    <a href="{% url "forum:thread_list" %}">Return</a>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Post</button>
+    </form>
+{% endblock %}

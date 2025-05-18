@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Article, ArticleCategory
+from .models import Article, ArticleCategory, Comment
 
 # Register your models here.
 
@@ -14,6 +14,16 @@ class ArticleAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     list_display = ('title', 'category', 'created_on', 'updated_on',)
     list_filter = ('title', 'category', 'created_on', 'updated_on',)
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    '''Admin View for Comment'''
+
+    search_fields = ('author', 'entry',)
+    list_display = ('author', 'entry', 'article', 'created_on', 'updated_on',)
+    list_filter = ('author', 'article', 'created_on', 'updated_on',)
+    ordering = ('-created_on',)
 
 
 admin.site.register(Article, ArticleAdmin)

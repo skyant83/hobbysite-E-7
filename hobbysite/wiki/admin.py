@@ -1,9 +1,25 @@
 from django.contrib import admin
-from .models import Article, ArticleCategory
+from .models import Article, ArticleCategory, Comment
 
 
 class ArticleInline(admin.TabularInline):
     model = Article
+
+
+class CommentInline(admin.TabularInline):
+    model = Comment
+
+
+class CommentAdmin(admin.ModelAdmin):
+    model = Comment
+    fieldsets = (
+        ('Comments', {
+            "fields": (
+                "author",
+                "entry"
+            ),
+        }),
+    )
 
 
 class ArticleCategoryAdmin(admin.ModelAdmin):
@@ -13,13 +29,14 @@ class ArticleCategoryAdmin(admin.ModelAdmin):
 
 class ArticleAdmin(admin.ModelAdmin):
     model = Article
+    inlines = [CommentInline,]
     search_fields = ("title", "category",)
     list_display = ("title", "created_on", "updated_on")
     list_filter = ("title", "category", "created_on", "updated_on")
     fieldsets = (
         ("Article Information", {
             "fields": [
-                ("title", "category",),
+                ("title", "author", "category",),
                 "entry"
             ]
         }),
@@ -28,3 +45,4 @@ class ArticleAdmin(admin.ModelAdmin):
 
 admin.site.register(ArticleCategory, ArticleCategoryAdmin)
 admin.site.register(Article, ArticleAdmin)
+admin.site.register(Comment, CommentAdmin)

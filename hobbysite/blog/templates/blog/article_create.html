@@ -1,0 +1,103 @@
+{% extends 'base_with_login.html' %}
+{% load static %}
+
+{% block header %}New Article{% endblock header %}
+
+{% block content %}
+    <a href="{% url 'blog:articles' %}"><button>Back</button></a>
+    <div style="
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        vertical-align: middle;">
+        <div style="width:50%;">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- {{ form.as_p }} -->
+
+                <p>
+                    Header Image <br>
+                    <img id="h_img" src=""> <br>
+                    {{ form.header_image }} <br>
+                </p>
+                <div style="display: flex; gap: 2em; justify-content: center;" >
+                    <p>
+                        {{ form.author.label }} <br>
+                        {{ form.author }}
+                    </p>
+                    <p>
+                        {{ form.category.label }} <br>
+                        {{ form.category }}
+                    </p>
+                </div>
+                <p>
+                    {{ form.title.label }} <br>
+                    {{ form.title }}
+                </p>
+                <p>
+                    {{ form.entry.label }} <br>
+                    {{ form.entry }}
+                </p>
+                <div>
+                    <p onload="startTime(this)" id="time">
+                        Creation Date:
+                        {{ form.instance.created_on.initial|date:"M d, Y g:i:s" }}
+                    </p>
+                </div>
+                <button type="submit">Post Blog</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                console.log(input.files);
+                var reader = new FileReader()
+
+                reader.onload = function (e) {
+                    el = document.getElementById('h_img')
+                    el.src = e.target.result
+                    el.style="height: 10em; width: fit-content;"
+                }
+                reader.readAsDataURL(input.files[0])
+            }
+        }
+
+        function startTime() {
+            const today = new Date()
+            var month = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ];
+            const zeroPad = (num, places) => String(num).padStart(places, '0')
+
+
+            let M = month[today.getMonth()]
+            let d = zeroPad(today.getDate().toString(), 2)
+            let y = today.getFullYear().toString()
+            let h = zeroPad(today.getHours().toString(), 2)
+            let m = zeroPad(today.getMinutes().toString(), 2)
+            let s = zeroPad(today.getSeconds().toString(), 2)
+
+            document.getElementById('time').innerHTML = `Creation Date: ${M} ${d}, ${y} ${h}:${m}:${s}`
+            console.log('g');
+
+            setTimeout(startTime, 1000)
+        }
+
+        startTime()
+    </script>
+    <script src="{% static 'resizable_text_entry.js' %}"></script>
+{% endblock content %}

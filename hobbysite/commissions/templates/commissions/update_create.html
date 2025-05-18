@@ -1,0 +1,19 @@
+{% extends 'base_with_login.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block header %}{{ header }}{% endblock header %}
+{% block content %}
+    <a href="{% url 'commissions:list' %}">Back to Commissions list</a>
+    <form method='POST' enctype='multipart/form-data'>
+        {% csrf_token %}
+        {{ commission_form }}
+        <hr>
+        JOBS<br>
+        {{ job_form.management_form }}
+        {% for job in job_form %}
+            {{ job }}<hr>
+        {% endfor %}
+        <button type='submit'>{{ button_text }}</button>
+    </form>
+{% endblock %}

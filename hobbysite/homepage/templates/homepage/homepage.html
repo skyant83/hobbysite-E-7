@@ -1,0 +1,19 @@
+{% extends 'base_with_login.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block header %} Hobby Site {% endblock header %}
+{% block content %}
+    <div style="justify-content: center;align-items: center; align-content: center;text-align: center;">
+
+        <!-- <br><a href="{% url 'merchstore:product_list'%}">Merchstore</a>
+        <br><a href="{% url 'wiki:article_list'%}">Online Wiki</a>
+        <br><a href="{% url 'blog:articles'%}">Blog</a>
+        <br><a href="{% url 'forum:thread_list'%}">Forum</a>
+        <br><a href="{% url 'commissions:list'%}">Commission</a><br> -->
+
+        <h2>Members:</h2>
+        {% for member in members %}
+            <p>{{ member }}</p>
+        {% endfor %}
+    </div>
+{% endblock %}

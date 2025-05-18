@@ -5,3 +5,9 @@
 *.sqlite3
 myenv/
 .vscode/
+**/media/*
+**/static/images/*
+*.png
+*.jpg
+*.jpeg
+hobbyenv/

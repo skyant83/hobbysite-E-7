@@ -10,7 +10,7 @@ from .forms import TransactionForm, ProductForm
 
 class ProductListView(ListView):
     model = Product
-    template_name = 'merchstore/products_list.html'
+    template_name = 'merchstore/product_list.html'
 
     def get_context_data(self, **kwargs):
         ctx = super(ProductListView, self).get_context_data(**kwargs)
@@ -47,6 +47,7 @@ class ProductDetailView(DetailView):
                 updated_stock = product.stock - transaction.amount
                 if updated_stock <= 0:
                     updated_stock = 0
+                    transaction.amount = product.stock
                     product.status = 'OOS'
                 product.stock = updated_stock
                 product.save()

@@ -1,12 +1,52 @@
-{% extends 'base.html' %}
+{% extends 'base_with_login.html' %}
 
 {% block title %}Commissions{% endblock %}
 
 {% block header %}Commissions{% endblock header %}
 {% block content %}
+    <p style="font-size: 120%">MY COMMISSIONS:</p>
+        <a href="{% url 'commissions:create' %}">CREATE NEW</a>
     <ol>
-        {% for post in object_list %}
-        <li><a href="{{ post.get_absolute_url }}">{{ post }}</a></li>
+        {% for commission in commissions_placed %}
+                <li><a href="{{ commission.get_absolute_url }}">{{ commission }}</a><br>
+                      STATUS
+                    <ul>
+                        <li>{{ commission.status|upper }}</li>
+                    </ul>
+                </li>
+
+                {% empty %}
+                    <p style="font-size: medium">NONE</p>
+        {% endfor %}
+    </ol>
+
+    <p style="font-size: 120%"><br>APPLIED TO:</p>
+    <ol>
+        {% for commission in commissions_applied %}
+            <li><a href="{{ commission.get_absolute_url }}">{{ commission }}</a><br>
+                  STATUS
+                <ul>
+                    <li>{{ commission.status|upper }}</li>
+                </ul>
+            </li>
+
+            {% empty %}
+                <p style="font-size: medium">NONE</p>
+        {% endfor %}
+    </ol>
+    
+    <p style="font-size: 120%"><br>COMMISSIONS:</p>
+    <ol>
+        {% for commission in commission_list %}
+            <li><a href="{{ commission.get_absolute_url }}">{{ commission }}</a><br>
+                  STATUS
+                <ul>
+                    <li>{{ commission.status|upper }}</li>
+                </ul>
+            </li>
+
+            {% empty %}
+                <p style="font-size: medium">NONE</p>
         {% endfor %}
     </ol>
 {% endblock %}

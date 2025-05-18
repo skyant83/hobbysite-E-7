@@ -1,20 +1,94 @@
-{% extends 'base.html' %}
+{% extends 'base_with_login.html' %}
+{% load static %}
 {% block title %} {{article.title}} {% endblock title %}
-{% block header %} {{article.title}} {% endblock header %}
+{% block header %}
+    <div>
+        <a href="{% url 'blog:articles' %}" style="display: flex; float: left;"><button>Back</button></a>
+    </div>
+    <div style="margin: auto;">
+        <img
+            style="
+                height:10em;
+                width:fit-content;
+                display: flex;
+                margin: auto;"
+            src="{{article.header_image.url}}">
+        {{article.title}}
+    </div>
+{% endblock header %}
+
 {% block content %}
-    <blockquote>
-        <div style="display:flex">
-            <div>
-                <sub>Created on {{article.created_on}}</sub>
-                <br>
-                <sub>Last Updated on {{article.updated_on}}</sub>
-            </div>
-            <div>
-                <sub>Category: {{article.category}}</sub>
-            </div>
+    <div style="display:flex; align-items: center;">
+        <div>
+            <sub>Written by {{article.author}}</sub>
+            <br>
+            <sub>Created on {{article.created_on}}</sub>
+            <br>
+            <sub>Last Updated on {{article.updated_on}}</sub>
         </div>
-    </blockquote>
+        <div>
+            <sub>Category: {{article.category}}</sub>
+        </div>
+    </div>
+
+    <br>
+
+    {% if user == article.author %}
+        <a href="{% url 'blog:update_article' pk %}"><button>Edit Post</button></a>
+
+    {% endif %}
+
     <hr>
 
     <p> {{article.entry}} </p>
+
+    {% if author_articles %}
+        <div>
+            <div style="text-align: center;">More from {{article.author}}</div>
+            <br>
+            <div style="display: flex; justify-content: center; text-align: center;">
+                {% for alt_article in author_articles|slice:":3" %}
+                    <div style="margin-inline: 2em;">
+                        <a href="{{ alt_article.get_absolute_url }}">
+                            <img
+                                style="height: 5em;
+                                width: fit-content;"
+                                src="{{ alt_article.header_image.url }}">
+                            <br>
+                            {{ alt_article.title }}
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    <div>
+        <h4>Comments</h4>
+
+        {% if request.user.is_authenticated %}
+            <form method="post" enctype="multipart/form-data" style="display: flex; gap: 1em;;">
+                {% csrf_token %}
+                <table>
+                    {% for field in form %}
+                        <tr><td>{{ field }}</td></tr>
+                    {% endfor %}
+                </table>
+                <button type="submit">Post</button>
+            </form>
+        {% endif %}
+
+        {% for comment in comments %}
+            <h5>{{ comment.author }}</h5>
+            <blockquote>
+                <p>{{ comment.entry }}</p>
+                <sub>Posted: {{ comment.created_on }}</sub>
+                <br>
+                <sub>Edited: {{ comment.updated_on }}</sub>
+            </blockquote>
+        {% endfor %}
+    </div>
+
+    <script src="{% static 'resizable_text_entry.js' %}"></script>
+
 {% endblock content %}

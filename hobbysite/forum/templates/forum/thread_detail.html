@@ -1,0 +1,41 @@
+{% extends 'base_with_login.html' %}
+
+{% block title %}Forum{% endblock %}
+
+{% block header %}Forum{% endblock header %}
+{% block content %}
+<a href="{% url 'forum:thread_list' %}">Return to main forum</a>
+<h2>{{ object.title }}</h2>
+{% if request.user == object.author.user %}
+    <p><a href="{% url 'forum:thread_update' object.pk %}">Edit Thread</a></p>
+{% endif %}
+<h3>{{ object.category }}</h3>
+<p>
+    Created {{ object.date_created }}<br>
+    Last updated {{ object.date_updated }}<br>
+    {% if object.image %}
+        <img src="{{ object.image.url }}" alt="">
+    {% endif %}<br>
+    {{ object.entry }}
+</p>
+
+<h3> Similar Threads </h3>
+<ol>
+{% for thread in similar_threads %}
+    <li><a href='{{ thread.get_absolute_url }}'>{{ thread.title }}</a></li>
+{% endfor %}
+</ol>
+
+{% for comment in comments %}
+    <p><b>{{ comment.author.display_name }}</b> commented on {{ comment.date_created }}</p>
+    <p>{{ comment.entry }}</p>
+{% endfor %}
+
+{% if request.user.is_authenticated %}
+    <form action="{% url 'forum:thread_detail' object.pk %}" method="POST">
+        {% csrf_token %}
+        {{ comment_form }}
+        <input type="submit" value="Comment">
+    </form>
+{% endif %}
+{% endblock %}
