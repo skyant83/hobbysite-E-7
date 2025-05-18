@@ -27,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['192.168.68.111', 'localhost']
+ALLOWED_HOSTS = ['192.168.68.111', 'localhost', '127.0.0.1', '167.71.218.175']
 
 
 # Application definition
@@ -59,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'hobbysite.urls'
@@ -87,9 +88,18 @@ WSGI_APPLICATION = 'hobbysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'hobbysite',
+        'USER': 'hobbyist',
+        'PASSWORD': '1324Pass',
+        'HOST': 'localhost',
+        'PORT': '',
     }
+
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
 }
 
 
@@ -127,10 +137,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATICFILES_DIRS = [
-    BASE_DIR/'static'
-]
-STATIC_URL = '/static/'
+# STATICFILES_DIRS = [BASE_DIR/'static']
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
+STATIC_URL = '/staticfiles/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login'
 MEDIA_ROOT = BASE_DIR/'media'
