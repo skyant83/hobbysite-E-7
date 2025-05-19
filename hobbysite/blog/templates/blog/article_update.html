@@ -1,110 +1,120 @@
 {% extends 'base_with_login.html' %}
 {% load static %}
 
-{% block header %}Edit Post{% endblock header %}
+{% block styles %}
+<style>
+    .btn {
+        background-color: #FF4545;
+        color: white;
+        border: none;
+        padding: 0.75em 1.5em;
+        font-size: 1em;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: #ff6565;
+    }
+
+    .back-btn {
+        margin: 1.5em 0;
+        float: left;
+        display: flex;
+    }
+</style>
+{% endblock styles %}
+
+{% block back %}
+    <a class="back-btn" href="{% url 'blog:article' pk %}">
+        <button class="btn">← Back</button>
+    </a>
+{% endblock back %}
+
+{% block header %}
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1em 2em;">
+        <h1 style="text-align: center; flex: 1;">Edit Post</h1>
+        <div style="width: 4em;"></div> {# Spacer to balance back button #}
+    </div>
+{% endblock header %}
 
 {% block content %}
-    <a href="{% url 'blog:article' pk %}"><button>Back</button></a>
-    <div style="
-        display: flex;
-        text-align: center;
-        justify-content: center;
-        vertical-align: middle;">
-        <div style="width:50%;">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <!-- {{ form.as_p }} -->
+<div style="display: flex; justify-content: center; padding: 2em;">
+    <div style="width: 100%; max-width: 700px; background-color: #2c2c2c; padding: 2em; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+        <form method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 1.5em;">
+            {% csrf_token %}
 
-                <p>
-                    Header Image <br>
-                    <img
-                        id="h_img"
-                        src="{{ form.instance.header_image.url }}"
-                        style="height: 10em; width: fit-content;"> <br>
-                    {{ form.header_image }} <br>
-                </p>
-                <div style="display: flex; gap: 2em; justify-content: center;" >
-                    <p>
-                        {{ form.author.label }} <br>
-                        {{ form.author }}
-                    </p>
-                    <p>
-                        {{ form.category.label }} <br>
-                        {{ form.category }}
-                    </p>
+            <div>
+                <label for="id_header_image" style="font-weight: bold;">Header Image</label><br>
+                <img id="h_img" src="{{ form.instance.header_image.url }}" style="height: fit; width: 100%; border-radius: 8px; margin-top: 0.5em;"><br>
+                {{ form.header_image }}
+            </div>
+
+            <div style="display: flex; gap: 2em; flex-wrap: wrap;">
+                <div style="flex: 1;">
+                    <label>{{ form.author.label }}</label><br>
+                    {{ form.author }}
                 </div>
-                <p>
-                    {{ form.title.label }} <br>
-                    {{ form.title }}
-                </p>
-                <p>
-                    {{ form.entry.label }} <br>
-                    {{ form.entry }}
-                </p>
-                <div style="display: flex; gap:1em;">
-                    <p>
-                        Creation Date:
-                        {{ form.instance.created_on|date:"M d, Y g:i:s" }}
-                    </p>
-                    <p onload="startTime(this)" id="time">
-                        Update Date:
-                        {{ form.instance.updated_on.initial|date:"M d, Y g:i:s" }}
-                    </p>
+                <div style="flex: 1;">
+                    <label>{{ form.category.label }}</label><br>
+                    {{ form.category }}
                 </div>
-                <button type="submit">Post Blog</button>
-            </form>
-        </div>
+            </div>
+
+            <div>
+                <label>{{ form.title.label }}</label><br>
+                {{ form.title }}
+            </div>
+
+            <div>
+                <label>{{ form.entry.label }}</label><br>
+                {{ form.entry }}
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-size: 0.9em; color: #bbbbbb;">
+                <div>
+                    Created: {{ form.instance.created_on|date:"M d, Y g:i:s" }}
+                </div>
+                <div id="time">
+                    Updated: {{ form.instance.updated_on|date:"M d, Y g:i:s" }}
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 1em;">
+                <button type="submit" class="btn" style="padding: 0.6em 2em; font-size: 1.1em;">Update Post</button>
+            </div>
+        </form>
     </div>
+</div>
 
-    <script>
-        function readURL(input) {
-
-            if (input.files && input.files[0]) {
-                console.log(input.files);
-                var reader = new FileReader()
-
+<script>
+    const imageInput = document.getElementById('id_header_image');
+    if (imageInput) {
+        imageInput.addEventListener('change', function () {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
                 reader.onload = function (e) {
-                    el = document.getElementById('h_img')
-                    el.src = e.target.result
-                    el.style="height: 10em; width: fit-content;"
-                }
-                reader.readAsDataURL(input.files[0])
+                    const el = document.getElementById('h_img');
+                    el.src = e.target.result;
+                };
+                reader.readAsDataURL(this.files[0]);
             }
-        }
+        });
+    }
 
-        function startTime() {
-            const today = new Date()
-            var month = [
-                "January",
-                "February",
-                "March",
-                "April",
-                "May",
-                "June",
-                "July",
-                "August",
-                "September",
-                "October",
-                "November",
-                "December"
-            ];
-            const zeroPad = (num, places) => String(num).padStart(places, '0')
+    function startTime() {
+        const today = new Date();
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const pad = n => n.toString().padStart(2, '0');
 
+        const dateStr = `${months[today.getMonth()]} ${pad(today.getDate())}, ${today.getFullYear()} ${pad(today.getHours())}:${pad(today.getMinutes())}:${pad(today.getSeconds())}`;
+        document.getElementById('time').innerText = `Updated: ${dateStr}`;
+        setTimeout(startTime, 1000);
+    }
 
-            let M = month[today.getMonth()]
-            let d = zeroPad(today.getDate().toString(), 2)
-            let y = today.getFullYear().toString()
-            let h = zeroPad(today.getHours().toString(), 2)
-            let m = zeroPad(today.getMinutes().toString(), 2)
-            let s = zeroPad(today.getSeconds().toString(), 2)
+    startTime();
+</script>
 
-            document.getElementById('time').innerHTML = `Update Date: ${M} ${d}, ${y} ${h}:${m}:${s}`
-            console.log('g');
-
-            setTimeout(startTime, 1000)
-        }
-
-        startTime()
-    </script>
-    <script src="{% static 'resizable_text_entry.js' %}"></script>
+<script src="{% static 'resizable_text_entry.js' %}"></script>
 {% endblock content %}

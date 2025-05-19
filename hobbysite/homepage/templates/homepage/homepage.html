@@ -1,19 +1,57 @@
 {% extends 'base_with_login.html' %}
 {% load static %}
+
 {% block title %}Home{% endblock %}
-{% block header %} Hobby Site {% endblock header %}
+{% block header %}
+    <h1 style="text-align: center; font-size: 2.5em; margin: 1em 0;">Welcome to the Hobby Site</h1>
+{% endblock %}
+
 {% block content %}
-    <div style="justify-content: center;align-items: center; align-content: center;text-align: center;">
+<div style="display: flex; flex-direction: column; align-items: center; padding: 2em; text-align: center;">
 
-        <!-- <br><a href="{% url 'merchstore:product_list'%}">Merchstore</a>
-        <br><a href="{% url 'wiki:article_list'%}">Online Wiki</a>
-        <br><a href="{% url 'blog:articles'%}">Blog</a>
-        <br><a href="{% url 'forum:thread_list'%}">Forum</a>
-        <br><a href="{% url 'commissions:list'%}">Commission</a><br> -->
+    <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5em; width: 100%; max-width: 800px;">
+        <a href="{% url 'blog:articles' %}" class="home-link-card">📚 Blog</a>
+        <a href="{% url 'forum:thread_list' %}" class="home-link-card">💬 Forum</a>
+        <a href="{% url 'merchstore:product_list' %}" class="home-link-card">🛍️ Merchstore</a>
+        <a href="{% url 'wiki:article_list' %}" class="home-link-card">📖 Wiki</a>
+        <a href="{% url 'commissions:list' %}" class="home-link-card">🎨 Commissions</a>
+    </section>
 
-        <h2>Members:</h2>
-        {% for member in members %}
-            <p>{{ member }}</p>
-        {% endfor %}
-    </div>
+    <section style="margin-top: 3em; width: 100%; max-width: 600px;">
+        <h2 style="border-bottom: 2px solid #FF4545; padding-bottom: 0.3em; margin-bottom: 1em;">🧑‍🤝‍🧑 Members</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5em; justify-content: center;">
+            {% for member in members %}
+                <span style="background-color: #333; padding: 0.5em 1em; border-radius: 8px;">
+                    {{ member }}
+                </span>
+            {% empty %}
+                <p>No members found.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+</div>
+
+<style>
+    .home-link-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.2em;
+        border-radius: 10px;
+        background-color: #2e2e2e;
+        color: #FF4545;
+        font-weight: bold;
+        font-size: 1.1em;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .home-link-card:hover {
+        background-color: #3a3a3a;
+        transform: translateY(-2px);
+        text-decoration: underline;
+    }
+</style>
 {% endblock %}

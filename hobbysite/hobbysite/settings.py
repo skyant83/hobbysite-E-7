@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['192.168.68.111', 'localhost', '127.0.0.1', '167.71.218.175']
 
@@ -143,7 +143,8 @@ USE_TZ = True
 
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
-STATICFILES_DIRS = [BASE_DIR/'staticfiles']
+else:
+    STATICFILES_DIRS = [BASE_DIR/'staticfiles']
 STATIC_URL = '/staticfiles/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login'

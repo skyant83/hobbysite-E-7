@@ -47,6 +47,7 @@
                 <nav>
                     <strong>
                         <ul>
+                            <li><a href="{% url 'homepage:home' %}">Home</a></li>
                             <li><a href="{% url 'blog:articles' %}">Blog</a></li>
                             <li><a href="{% url 'commissions:list' %}">Commissions</a></li>
                             <li><a href="{% url 'forum:thread_list' %}">Forum</a></li>
@@ -56,15 +57,21 @@
                     </strong>
                 </nav>
             </header>
-            <h1 class="block_header">
-                {% block header %}Header{% endblock header %}
-            </h1>
-            <section class="login">
-                {% block login %}{% endblock %}
-            </section>
-            <section class="content">
-                {% block content %}{% endblock %}
-            </section>
+	    <div style="display: block; align-items: center;">
+                <div style="float: left;">
+                    {% block back %}{% endblock %}
+                </div>
+                <div style="float: right; margin: 1.5em 0;">
+                    {% block login %}{% endblock %}
+                </div>
+            </div>
         </main>
+	<br>
+        <h1 class="block_header">
+            {% block header %}Header{% endblock header %}
+        </h1>
+        <section class="content">
+            {% block content %}{% endblock %}
+        </section>
     </body>
 </html>

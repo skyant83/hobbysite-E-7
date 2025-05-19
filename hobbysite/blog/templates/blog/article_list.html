@@ -1,45 +1,118 @@
 {% extends 'base_with_login.html' %}
-{% block header %} Posted Blogs {% endblock header %}
+{% block title %}Blog{% endblock %}
+{% block header %}Posted Blogs{% endblock header %}
+
+{% block styles %}
+<style>
+    .article-section {
+        margin-bottom: 3em;
+    }
+
+    .category-title {
+        font-size: 1.5em;
+        color: #FF6B6B;
+        margin: 1em 0 0.5em;
+    }
+
+    .article-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5em;
+    }
+
+    .article-card {
+        background-color: #2b2b2b;
+        padding: 1em;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s ease;
+    }
+
+    .article-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .article-title {
+        font-size: 1.1em;
+        color: #FF4545;
+        margin-bottom: 0.5em;
+        font-weight: bold;
+    }
+
+    .new-article-btn {
+        margin: 1.5em 0;
+    }
+
+    blockquote {
+        font-style: italic;
+        color: #aaa;
+        margin: 0.5em 0 1em 1em;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
-    {% if request.user.is_authenticated %}
+{% if request.user.is_authenticated %}
+    <section class="article-section">
         <h2>My Articles</h2>
-        {% for category, articles in author_categories.items %}
-            {% if category %}
-                <h4> {{ category }} </h4>
-                {% for article in articles %}
-                    <ul>
-                        <li>
-                            <a href="{{article.get_absolute_url}}">{{article.title}}</a>
-                        </li>
-                    </ul>
-                {% empty %}
-                    <blockquote>You Have No Article In This Category</blockquote>
-                {% endfor %}
-            {% else %}
-                You Have Articles
-            {% endif %}
-        {% endfor %}
-        <a href="{% url 'blog:create_article' %}"><button>New Article</button></a>
-    {% endif %}
-
-
-    <h2>All Articles</h2>
-    {% for category, articles in categories.items %}
-        {% if category %}
-            <h4> {{ category }} </h4>
-            {% for article in articles %}
-                <ul>
-                    <li>
-                        <a href="{{article.get_absolute_url}}">{{article.title}}</a>
-                    </li>
-                </ul>
-            {% empty %}
-                <blockquote>No Article In This Category</blockquote>
+        {% if author_categories %}
+            {% for category, articles in author_categories.items %}
+                <div>
+                    <h3 class="category-title">{{ category|default:"Uncategorized" }}</h3>
+                    {% if articles %}
+                        <div class="article-grid">
+                            {% for article in articles %}
+                                <a href="{{ article.get_absolute_url }}" class="article-title">
+                                    <div class="article-card">
+                                        {{ article.title }}
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <blockquote>You have no articles in this category.</blockquote>
+                    {% endif %}
+                </div>
             {% endfor %}
         {% else %}
-            No Articles Available
+            <p>You haven’t written any articles yet.</p>
         {% endif %}
-    {% endfor %}
-    <br>
-{% endblock content %}
+
+        <div class="new-article-btn">
+            <a href="{% url 'blog:create_article' %}">
+                <button>+ New Article</button>
+            </a>
+        </div>
+    </section>
+{% endif %}
+
+<hr style="margin: 2em 0; border-top: 1px solid #444;">
+
+<section class="article-section">
+    <h2>All Articles</h2>
+    {% if categories %}
+        {% for category, articles in categories.items %}
+            <div>
+                <h3 class="category-title">{{ category|default:"Uncategorized" }}</h3>
+                {% if articles %}
+                    <div class="article-grid">
+                        {% for article in articles %}
+                            <div class="article-card">
+                                <a href="{{ article.get_absolute_url }}" class="article-title">
+                                    {{ article.title }}
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <blockquote>No articles in this category.</blockquote>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No articles available.</p>
+    {% endif %}
+</section>
+
+{% endblock %}
